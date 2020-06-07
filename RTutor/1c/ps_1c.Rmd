@@ -1,0 +1,701 @@
+# Problemset 1c
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE' # set to your user name
+
+# To check your problem set, run the 
+# RStudio Addin 'Check Problemset'
+
+# Alternatively run the following lines
+library(RTutor)
+ps.dir = getwd() # directory of this file
+ps.file = 'ps_1c.Rmd' # name of this file
+check.problem.set('ps_1c', ps.dir, ps.file, user.name=user.name, reset=FALSE)
+```
+
+
+## Exercise 1 
+
+In this exercise, we explore in more detail multiple regression and the regression anatomy. Assume we have the following data generating process for the ice cream demand.
+
+    q = beta0 + beta1*p + beta2*s + u
+
+where `s` is a dummy variable indicating whether it is sunny or not and `u` is an i.i.d. demand shock. Prices `p` shall be positively correlated with `s` but uncorrelated with the demand shock `u`. This means `u` was also not known by the decision maker who has set the prices.
+
+a) Complete the ___ in the following code.   
+
+```{r "1__a"}
+# You can change T if you like
+T = 1000
+beta0 = 100
+beta1 = -1
+beta2 = 20
+# Random draws of the sunny dummy
+# Set the correct value for the argument replace
+s = sample(0:1, T, replace = ___)
+
+# Let costs be uniformely distibuted between 10 and 30 
+c = ___
+
+# Compute the expected profit maximizing prices
+# given that s and c are known but not u
+p = ___
+
+# Let demand shocks u be normally distributed
+# with mean 0 and standard deviation 4
+u = ___
+
+# Finally we compute the demand
+q = beta0 + beta1*p + beta2*s + u
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+b) Estimate now with `lm` the "small" linear regression
+
+    q = beta0 + beta1*p + eps
+
+in which you omit the variable `s`. Save the result in `reg.small` and show a `summary` of it.
+
+```{r "1__b"}
+
+# enter your code here ...
+
+```
+
+In our short regression, we have `eps = beta2*s + u` and since `s` and `p` are correlated, also `eps` and `p` are correlated. We thus have an endogeniety problem and an inconsistent estimator.
+
+Indeed you see that the estimate `beta1.hat` for the price coefficient is many standard errors away from the true value `beta1 = -1`.
+
+d) Estimate now with `lm` the long regression
+
+    q = beta0 + beta1*p + beta2*s+ u
+
+save the result in `reg.long` and show a summary.
+
+```{r "1__d"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+Now your estimates of `beta1.hat` and `beta2.hat` should be pretty close to the true coefficients of `beta1=-1` and `beta2=20`. We have no endogeniety problem since both `p` and `s` are uncorrelated with `u` and if you kept the default parameter `T=1000` in your simulation, we have so many observations that the standard errors are pretty small.
+
+### Regression Anatomy
+
+e) We now want to replicate the long regression with two simple regressions using the regression anatomy approach. (Look at the corresponding slides in Chapter 1b). First regress `p` on `s` and save the result in `reg1`.
+
+```{r "1__e"}
+
+# enter your code here ...
+
+```
+
+Now let `p.tilde` be the residuals from `reg1`.
+
+```{r "1__e_2"}
+
+# enter your code here ...
+
+```
+
+This means `p.tilde` only contains the variation in prices that cannot be explained by `s`. In other words, `p.tilde` just contains the price variation due to the costs `c`. To check this claim compute the correlations described in the following chunk.
+
+```{r "1__e_3"}
+# 1. Compute the correlation between p and s
+
+# 2. Compute the correlation between p.tilde and s
+
+# 3. Compute the correlation between p and c
+
+# 4. Compute the correlation between p.tilde and c
+
+# enter your code here ...
+
+```
+
+But let us now continue with the second step of our regression anatomy approach. Regress `q` on `p.tilde` store the result in `reg2` and show a `summary` of it.
+
+```{r "1__e_4"}
+
+# enter your code here ...
+
+```
+
+If you compare the regression result with the multiple regression `reg.long` you see that we get the same estimate for the price coefficient `beta1.hat`. The regression anatomy approach seems indeed to work.
+
+Note however, that the estimated standard errors for `beta1.hat` differ between both regressions. Correct are only the standard errors of `reg.long`.
+
+f) There is a variation of the regression anatomy approach, known as the *Frisch–Waugh–Lovell theorem* that also leads to correct standard errors. You don't have to remember this approach, but you may find the result interesting.
+
+To implement it, replace the ___ in the next code chunk.
+```{r "1__f"}
+
+# Let q.tilde be the residual
+# from a regression of the dependent variable q
+# on the control variable s
+# 
+# Replace the ___
+
+q.tilde = resid(lm(___))
+
+# Now show a summary of the regression of
+# q.tilde on p.tilde
+
+summary(lm(___))
+
+
+# enter your code here ...
+
+```
+
+Here the new dependent variable `q.tilde` is that variation of `q` that cannot be explained by `s`. If we regress it on `p.tilde` we get again the same estimate `beta1.hat` as in our long regression `reg.long` and as in our previous regression `reg2` of `q` on `p.tilde`. This time we also get the same standard errors as in `reg.long`.
+
+If you like, you can also try out to regress `q.tilde` on `p`. But then you get a different (and inconsistent) estimate `beta1.hat`.
+
+So, interestingly, the essential aspect when controlling for the variable `s` is that we remove from the other explanatory variable `p` the variation due to `s`. While we *can* also remove from the dependent variable `q` the variation due to `s`, this removal does not affect the estimate `beta1.hat`. It is only needed to get correct estimates of the standard errors.
+
+
+### Controlling by running separate regressions for subsets of data with same value of s
+g) 
+
+Another way to control for the variable `s` is to run separate regressions for subsets of our data that each have the same value of `s`. Complete the following code chunks
+
+```{r "1__g"}
+# We first put our vectors into a
+# data frame dat
+dat = data.frame(p, s, q)
+
+# Show the head of dat
+
+# enter your code here ...
+
+```
+
+Now we want to use the `dplyr` function `filter` to generate to data frames:
+
+`dat0` shall only contain the rows where s is 0
+`dat1` shall only contain the rows where s is 1
+
+```{r "1__g_2"}
+library(dplyr)
+
+# enter your code here ...
+
+```
+
+Now we want to estimate the simple linear regression
+
+q = beta0 + beta1*p + eps
+
+using separetely the data sets `dat0` , `dat1` and for comparision also the complete data set `dat`.
+
+```{r "1__g_3"}
+
+# Complete the code below
+# 
+# Estimate regression for dat0
+reg0 = lm(___, data=dat0)
+# Estimate the regression for dat1
+reg1 = lm(___, data=___)
+
+# Estimate the regression for dat
+reg.all = ___
+
+# enter your code here ...
+
+```
+
+To compare all 3 regressions, we use the package `stargazer`.
+
+(We forgot to add stargazer in the first version of the installation script. If you have not installed it, call `install.packages("stargazer")` in the *R console*. But don't ever put an `install.packages` command in the code chunk of an RTutor Rmd file.)
+
+Just run the code below:
+```{r "1__g_4"}
+library(stargazer)
+stargazer(reg0, reg1, reg.all, type="text",keep.stat=c("n"))
+```
+
+You see that the first two regressions, where we only pick days with `s=0` (first) and `s=1` (second) both estimate the parameters of the demand function consistently. (You may argue that the second regression does not estimate the constant consistently. But it simply adds the effect of `s` to the constant, which really makes sense.)
+
+
+
+## Exercise 2 -- Effect of Job Training
+
+
+a) Load the dataset "jobtrain.Rds" (was in the ZIP file of this problem set) into a data frame called `dat` and show the head of `dat`.
+
+```{r "2_a"}
+
+# enter your code here ...
+
+```
+
+These are three variables from a data set studied in the article “Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation of Training Programs,” by  R.H. Dehejia and S. Wahba (1999).
+
+The data set is a sample of workers who were unemployed in 1977. The variable `train` is a dummy variable that indicates whether the worker participated in a job training program in 1977. The variable `unem78` indicates whether the worker was still unemployed in 1978. The variable `unem75` describes whether the worker was already unemployed in 1975 (two years before the training).
+
+b) To justify expenses for job training, what should be sign of the causal effect of `train` on `unemp78`?
+```{r "2_b",optional=TRUE}
+# Type "negative" or "positive"
+
+# enter your code here ...
+
+```
+
+We would hope that job training reduces the probability to be unemployed.
+
+c) Estimate the simple linear regression
+
+`unem78 = beta0 + beta1 * train + eps`
+
+Save the result in `reg1` and show a `summary` of `reg1`.
+```{r "2_c"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+We find a positive estimate of the coefficient for jobtraining `train` on unemployment next year `unemp78`. The interpretation of the coefficient `0.128` is that an unemployed worker in 1977 who participated in job training  has a 12.83 percentage points higher probability to be still unemployed in 1978 than an worker who was unemployed in 1977 but did not participate in job training.
+
+Does this mean that job training *causes* an increase in the probability to be unemployed next year? If our data set came from a well-randomized experiment, that would be the correct interpretation. But does our data come from a well-randomized experiment?
+
+d) Fill in the ___ in the code below to compare between workers who were already unemployed in 1975 and those who weren't, the share that participated in job training and the share who were still unemployed in 1978.
+```{r "2_d"}
+dat %>% 
+  group_by(___) %>%
+  summarize(mean(train), mean(unem78))
+
+# enter your code here ...
+
+```
+
+Does this data suggest that job training participation was randomly assigned to all workers in the data set?
+
+```{r "2_d_2"}
+# Type "yes" or "no"
+
+# enter your code here ...
+
+```
+
+If job training were randomly assigned the share of long-term unemployed (`unem75=1`) that participated in job training should be roughly the same as for short term unemployed (`unem75=0`). Yet, we see that for long term unemployed the probability to participate in job training is roughly 10 times as large as for short term unemployed. At the same time long-term unemployed are roughly ten times as likely to be still unemployed in 1978 than short term unemployed. 
+
+e) Which sign would you thus expect for the correlation `cor(train, eps)` in the short regression
+
+`unem78 = beta0 + beta1 * train + eps`?
+
+```{r "2_e"}
+# Type "positive" or "negative"
+
+# enter your code here ...
+
+```
+
+Probably even absent any job training, workers who were long-term unemployed in 1977 are more likely to be unemployed in 1978 than those who were only short term unemployed in 1977. This would mean that `unem75` positively affects the error term `eps` in the regression above.
+
+At the same time we saw that `unem75` positively affects the probability to participate in job training in 1977.
+
+We thus would expect that in the short regression above, `train` is endogenous with `cor(train, eps)>0`. Our OLS estimator for `beta1` in the simple regression therefore is likely inconsistent with a positive bias (recall the bias formula from Chapter 1b.)
+
+This sort of bias that arises because systematically different types of individuals were selected for the treatment (here the job training) is called *selection bias*. 
+
+Let us now add `unem75` as control variable and estimate the longer regression:
+
+`unem78 = beta0 + beta1 * train + beta2 * unem75 + u`
+
+Perform this regression, save the result in `reg2` and show a `summary` of `reg2`. 
+```{r "2_e_2"}
+
+# enter your code here ...
+
+```
+
+We now find a negative estimate `beta1.hat` for the effect of job training on unemployment in the next year.
+
+It is not clear that we now already have a consistent estimator of the causal effect of job training on unemployment since there may be other factors still left in the error term that could affect both the probability to participate in job training and being umemployed in 1978 (e.g. motivation, skills, age, ...). But it looks as if we have at least reduced the bias by including `unem75` as control variable.  
+
+f) We now want to run two short regressions: one for long-term unemployed and one for short-term unemployed.
+
+Use the dplyr `filter` function to split `dat` into two data frame: `dat_lt` shall contain all long-term unemployed (those who were already umemployed in 1975) and `dat_st` all short term unemployed.
+
+```{r "2_f"}
+
+# enter your code here ...
+
+```
+
+Now estimate the short regression of `unem78` on `train` once for `dat_lt` and once for `dat_st` and save the results in `reg_lt` and `reg_st`, respectively.
+
+```{r "2_f_2"}
+
+# enter your code here ...
+
+```
+
+To compare the two regressions we will again use the package `stargazer`. Just run the code below:
+```{r "2_f_3"}
+library(stargazer)
+stargazer(reg_st, reg_lt, type="text",keep.stat=c("n"), column.labels = c("Short-Term","Long-Term") )
+```
+
+Interestingly, we estimate a strong negative coefficient for job training for long term unemployed but a positive coefficient for short term unemployed. Both estimates are many standard error away from each others. (Standard errors are shown in brackets below the estimated coeffiecient.)
+
+Does this regression prove that job training works better for long-term unemployed and has negative effects for short term unemployed?
+```{r "2_f_4"}
+# Type "yes" or "no"
+
+# enter your code here ...
+
+```
+
+There could be different reasons for this result. It is *possible*, that we have heterogenous treatment effects, i.e. job training helps long-term unemployed but not short-term unemployed.
+
+However, the difference could also reflect a more subtle selection bias. Maybe many long-term unemployed who don't choose job training have already given up finding a job while those who choose training are still intensively trying to find a job. For short term unemployed it might be the other way round. Maybe those who don't choose job training have good chances to quickly find a job even without training. Those who pick job training may have smaller chances and try to increase their chances with the training.
+
+To distinguish these effects we would need a randomized experiment or extremely good control variables.
+
+g) We finally want to replicate the results of the two separate regressions by estimating the following single regression with an interaction term:
+
+    unemp78 = beta0 + beta1*train + beta2*unem75 + beta3*train*unem75 + u
+
+Simply run the following code:
+```{r "2_g"}
+reg_interaction = lm(unem78 ~ +train+unem75 + train:unem75 , data=dat)
+
+stargazer(reg_st, reg_lt, reg_interaction, type="text",keep.stat=c("n"), column.labels = c("Short-Term","Long-Term", "All") )
+```
+
+You see that the coefficient before `train` in the regression with interaction term is the same than in the regression where we only looked at short-term unemployed. 
+
+The coefficient before the interaction term `train:unem75` measures the difference of the "effect" of training between short-term and long-term unemployed. The sum of the coefficient before `train` and the one before the interaction term is:
+
+`0.136 - 0.527 = -0.391`
+
+That is the coefficient before `train` in the 2nd regression were we only considered long-term unemployed.
+
+In general, the results of separate regressions for subsets of a sample can always be replicated with a single regression that uses the whole sample and includes appropriate interaction effects.
+
+
+## Exercise 3 -- Instrumental Variable Estimation
+
+Often it is the case that we don't have enough control variables to solve all endogeniety problems. Sometimes one can then use *instrumental variable* (IV) estimation instead.   
+
+a) Below we simulate a model for the demand function
+
+    q = beta0 + beta1 * p + beta2 * s + eps
+    
+This time we consider profit maximizing prices `p` assuming that both `s` and the demand shock `eps` are taken into account when setting prices. Just run the code below:
+
+```{r "3_a"}
+T = 2000
+beta0 = 100
+beta1 = -1
+beta2 = 20
+
+c = runif(T,0,20) # variable costs
+s = sample(0:1, T, replace = TRUE)
+eps = rnorm(T,0,8) # demand shocks
+
+p = (beta0 + beta2*s+ eps) / (-2*beta1) +c/2
+q = beta0 + beta1*p + beta2*s + eps
+```
+
+## 3.1 conditions for valid instruments
+
+b) Replace the ? below by the names of the two variables that are valid instruments for the prices `p` when estimating the demand function via IV. (Take a look at the corresponding slides in Chapter 1b.)
+
+```{r "3_b",optional=TRUE}
+c("?","?")
+
+# enter your code here ...
+
+```
+
+
+c) A valid instrument must satisfy two conditions: one particular correlation must be different from zero, another correlation must be equal to zero. Compute these two correlations for our simulated data for our excluded instrument `c`.
+
+```{r "3_c",optional=TRUE}
+# Compute the correlation that shall not be zero
+# (Relevance condition)
+
+# enter your code here ...
+
+# Compute the correlation that shall be zero
+# (Exogeniety condition.)
+
+# enter your code here ...
+
+```
+
+The correlation between the instrument and explanatory variable can also be computed for not simulated data and there is a formal `weak instrument test` that we get to know in a later chapter.
+
+On the other hand, it is hard to test the condition that instruments are uncorrelated with the disturbance since in real data we do not observe the disturbance `eps`. Similar to assessing whether an explanatory variable is endogenous, one has to think about which factors are included in `eps` and assess by common wisdom or knowledge of economic models whether `eps` is likely to be uncorrelated with the instrument or not.
+
+Also note that for a particular sample of simulated data, we will always find a litte bit correlation between `c` and `eps`. But we know from the data generating process, i.e. the R code above that generates the data, that `c` and `eps` are drawn independently from each other and thus are uncorrelated when seen as random variables.
+
+
+## 3.2 IV Estimation via Two-Stage-Least Squares Regression
+
+The key idea of instrumental variable estimation is that we only use the variation of the endogenous variable that is induced by the exogenous instruments to estimate the effect on the dependent variable.  
+
+This key idea can be better seen if we perform the IV estimation manually via two stage least squares (2SLS):
+
+d) Run the first stage regression: Use `lm` to regress the endogenous explanatory variable on your two instruments. Save the results in `reg1`. (Please write in your formula the excluded instrument before the other instrument.)
+```{r "3_d"}
+
+# enter your code here ...
+
+```
+
+e) Use the function `fitted` to assign to the variable `p.hat` the predicted values of the dependent variable of `reg1`.
+
+```{r "3_e"}
+
+# enter your code here ...
+
+```
+
+Note the difference to the regression anatomy of a multiple regression. Here `p.hat` contains only the variation in prices that *can* be explained by the instruments. In the regression anatomy `p.tilde` contained only the residual variation of prices that *cannot* be explained by the other control variables.
+
+f) Run the second stage regression: Use `lm` to estimate the original demand function with prices `p` being replaced by the fitted values `p.hat`. Store the results in the variable `reg2` and show a summary of `reg2`.
+
+```{r "3_f"}
+
+# enter your code here ...
+
+```
+
+The estimated coefficients are pretty close to the true coefficients `beta1=-1` and `beta2=20`. Indeed the two-stage least squares procedure solves the endogeneity problem and we get consistent estimates!
+
+Since we control in the second stage for `s`, the relevant variation in prices that identifies our estimate `beta1.hat` is only the variation in the excluded instrument: the cost `c`. 
+
+Since `c` is exogenous, so is `p.hat`. To see this, compute the correlations of `p.hat` with `eps` and for comparison also the correlation of `p` with `eps`.
+
+```{r "3_f_2",optional=TRUE}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+
+
+Note that the estimated standard errors in the second stage regression `reg2` are not correct. In practice, it is best if you use an existing R function to run an IV regression.
+
+## 3.3 Direct IV Estimation
+
+g) Load the R package AER and look at the help for the function `ivreg`, which allows you to perform IV estimation directly. Use `ivreg` to estimate the demand function instrumenting prices p with costs c. Save the regression result in the variable `iv` and show a summary of `iv`. (For RTutor to correctly check your solution, please write the instruments in your formula by starting with `c`.)
+```{r "3_g"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+We find the same (consistent) estimates than in our second stage regression `reg2`. The standard errors are different, however. We now have the correct standard errors. 
+
+h) Call `summary(iv, diagnostics=TRUE)` to get more details.
+
+```{r "3_h",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+We will explain later in the course what the different values and the diagnostic tests mean.
+
+
+
+## Exercise 4 -- Simulation Study and Weak Instruments
+
+Is an IV estimator always better than an OLS estimator, even if we have just a small endogeniety problem? Not necessarily. The IV estimator does not perform well if the instruments are only weakly correlated with the endogenous variable (called a *weak instruments problem*). If, on the other hand, the endogenous variable is only slightly correlated with the disturbance `eps`, the OLS estimator is only slightly biased but can have a much smaller MSE than the IV estimator.
+
+a) Consider the following function `sim.and.est`
+```{r "4_a"}
+sim.and.est = function(T, p.c.factor=1,p.eps.factor=1, sigma.eps=2) {
+  beta0=100
+  beta1=-1
+  
+  c = runif(T,0,20) # variable costs
+  eps = rnorm(T,0,sigma.eps) # demand shocks
+  
+  # Simulate prices that depend on c and eps and some random price shock
+  p = 50+ p.c.factor*c + p.eps.factor*eps + rnorm(T,0,1)
+  
+  q = beta0 + beta1*p + eps
+  
+  # Estimate via OLS and IV
+  X = cbind(1,p)
+  beta1.hat.ols = coef(lm.fit(y=q,x=X))[[2]]
+  beta1.hat.iv = coef(ivreg.fit(y=q,x=X,z=cbind(1,c)))[[2]]
+  
+  # Return date frame with estimates beta1.hat
+  data.frame(beta1=beta1,method=c("ols","iv"), 
+    beta1.hat=c(beta1.hat.ols, beta1.hat.iv))
+  
+}
+# Call sim.and.est with T=1000
+sim.and.est(T=1000)
+```
+The function simulates prices and output and returns the OLS and IV (using cost as instrument) estimates of the slope of the demand function `beta1.hat`. Prices `p` are correlated with cost `c` and with the unobserved demand shock `eps`.
+
+b) The strength of the relationship between p and cost c is determined in our simulation by the parameter `p.c.factor` and the strength of the relationship between p and demand shocks eps is determined by the parameter `p.eps.factor`. Call the function `sim.and.est` several times with the parameters
+
+    T=1000,p.c.factor = 0.01, p.eps.factor = 0.01
+
+```{r "4_b"}
+
+# enter your code here ...
+
+```
+
+c) For the parameters in b), which estimator seems to be better in the sense of having a smaller mean squared error?
+```{r "4_c"}
+# Enter "ols" or "iv"
+
+# enter your code here ...
+
+```
+
+d) Please complete correctly the following two statements for our simulation in sim.and.est:
+```{r "4_d",optional=TRUE}
+# Please copy the two sentences and then enter for ? either p.c.factor or p.eps.factor
+# and enter for ?? either small or large
+"If ? is ??, we have a problem of weak instruments."
+"If ? is ??, the endogeniety problem for the OLS estimator is not so strong."
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+e) We will conduct a systematic simulation study to compare the OLS and IV estimators for different parameters. Run the code below and then show dat.
+
+```{r "4_e"}
+library(sktools)
+dat = simulation.study(sim.and.est, repl=1, par = list(T=1000, p.c.factor = c(0.02,0.4), p.eps.factor=c(0.02,0.4)))
+
+# Show dat
+
+
+# enter your code here ...
+
+```
+
+f) In the zip file of this RTutor problem set is the data set "ols_iv_sim.Rds". It contains the results of the simulation study above with `repl=1000` replications. Load the data set with the appropriate R function into the variable `dat`. Then call the function `head` on `dat`.
+
+```{r "4_f"}
+
+# enter your code here ...
+
+```
+
+g) Let us first take a look at the distributions of the OLS and IV estimators. Load the package `ggplot2` and complete the ggplot code below. We want to show the distibution of `beta1.hat` and the fill color shall differ between estimation `method`.
+
+```{r "4_g",optional=TRUE}
+
+# enter your code here ...
+
+# Replace the ___
+ggplot(dat, aes(x=___, fill=___)) +
+  geom_density(alpha=0.5) + 
+  facet_grid(p.c.factor ~ p.eps.factor,
+    labeller = label_both) +
+  geom_vline(xintercept = -1, color="#888888")
+
+# enter your code here ...
+
+```
+
+Mmh, the plot does not look nice. The reason is that we seem to have a few very extreme estimates and therefore a very large range on the x-axis.  Use the function `range` to find the range of estimates `beta1.hat` in  `dat`.
+
+```{r "4_g_2"}
+
+# enter your code here ...
+
+```
+
+Wow! That is indeed quite a huge range for our estimates, given that we simulated large samples with `T=1000`.
+Which estimates have such extreme values? Load the package `dplyr` and use the function `top_n` to extract the `5` rows of `dat` with the highest value of `beta1.hat`.
+
+```{r "4_g_3",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+You see that the extreme estimates are all `iv` estimates from simulation runs in which the price and cost had very little correlation `p.c.factor = 0.02`.
+
+Let's see whether you also manage to find with `top_n` the 5 rows with the lowest value of `beta1.hat`.
+
+```{r "4_g_4"}
+
+# enter your code here ...
+
+```
+Similar cases here.
+
+To compare the distributions of our estimates `beta1.hat` graphically, we will now ignore such extreme outliers by limiting the x-axis values with the command `xlim`. 
+
+Just run the code below:
+```{r "4_g_5"}
+ggplot(dat, aes(x=beta1.hat, fill=method)) +
+  geom_density(alpha=0.5) + 
+  facet_grid(p.c.factor ~ p.eps.factor,
+    labeller = label_both) +
+  geom_vline(xintercept = -1, color="#888888") +
+  xlim(-2, 0.5)
+```
+
+We see a differentiated picture. In the lower-right case where we have a strong endogeneity problem (`p.eps.factor` is large) and a strong correlation between excluded instrument `c` and `p` (`p.c.factor` is large) the IV estimator is strictly better than the OLS estimator.
+
+In the lower left corner where the endogeneity problem is very weak, there is no big difference between the OLS and IV estimator.
+
+In the top row, where cost and prices are only very weakly correlated, the IV estimator is very imprecise.
+
+Luckily, the imprecision will show up in large estimated standard errors, so even with a single sample we will get some indication about this imprecision from the `summary` command. 
+
+In the case of the upper left corner (small correlation between `p` and `eps`) we may prefer the OLS estimator, which has a small bias but is still relatively precise.
+
+In the case in the upper right corner (large correlation between `p` and `eps` but very small correlation between `p` and `c`) we don't have any decent estimator for `beta1.hat`.
+
+
+
+
+## Submitting your solution
+
+To submit your problem set first check it via Addins -> "Check Problemset" and then run the following command in the R console:
+
+    make.submission()
+
+It checks again your whole problem set and generates a file of the form `problemsetname__username.sub` that contains your solution and log files.
+Now submit this file for the corresponding assignment on Moodle. 
+Please do not change the name of the file.
+
+** Make sure that you upload the .sub file to Moodle, not some file with another extension!**
+
+

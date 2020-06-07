@@ -2,7 +2,7 @@
 
 ```{r 'check_ps', include=FALSE}
 
-user.name = 'ENTER A USER NAME HERE' # set to your user name
+user.name = 'JohnDoe' # set to your user name
 
 # To check your problem set, run the 
 # RStudio Addin 'Check Problemset'
