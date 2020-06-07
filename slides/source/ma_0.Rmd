@@ -1,0 +1,224 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE)
+```
+#>
+
+#. include slide_defaults.rmd
+
+#< settings
+libs: []
+#>
+
+#. frame
+<center>
+<h2> Market Analysis with Econometrics and Machine Learning </h2>
+<h2> Overview </h3>
+
+<h3> Uni Ulm</h3>
+<h3> Prof. Dr. Sebastian Kranz </h3>
+<h3> SoSe 2020</h3>
+</center>
+
+#. frame Important Notes
+
+- **The course was previously called "Empirical Industrial Organization and Consumer Choice"**. If you have heard that course, you CANNOT take this course again.
+
+- Due to the Corona virus outbreak the course will (at least initially) only be taught digitally.
+
+  - Weakly assignments and detailed material (slides, videos, problem sets) time table will all be put on Moodle.
+  
+- You will work through most content of the courses by solving yourself interactive R problem sets that you regularly have to upload to Moodle.
+
+#. frame What the course is about
+
+- Methods to model and estimate
+
+  - demand functions and the behavior of consumers
+
+  - the strategic behavior and interactions of firms
+
+#. frame Example 1: Designing Railway Routes
+
+- A typical stated preference data set
+
+  - In 1987 the Hague Consulting Group for the national Dutch Railways invited 237 consumers to a choice experiment
+
+  - Each respondent made a sequence of hypothetical choices among two possibilities for traveling by train that differed in some or all of the following attributes: fare, journey time, number of rail changes, and comfort level.
+
+  - The goal was to improve route planning by better knowing consumers trade-off between travel time, interchanges and price
+
+#. frame Example 1: The value of travel time
+
+- By estimating an econometric model\*, one finds the following average willingness to pay
+
+#< tab
+One hour less travel, 25.54
+One less change of rails, 4.84
+#>
+
+<center style="font-size: 0.7em, padding-left: 5em">*The results are based on the assumption that consumers act according to a conditional logit model</center>
+
+- The course teaches you how to generate, visualize and interpret such estimates
+
+- Most importantly, you will learn about the small print:
+
+  - Understand models and the econometric methods that are used to generate such estimates
+
+  - Learn how your estimates can be complete rubbish when you don’t carefully think about the model that generated the data
+
+#. frame Example 2: What if Volkswagen bought Opel...
+
+- How would prices of cars change if Volkswagen bought Opel?
+
+<https://moodle.uni-ulm.de/mod/resource/view.php?id=192595>
+
+- Note the website only shows correctly if you have the Flash player plugin activated.
+
+#. frame Example 2: Analysing the effects of mergers
+
+- Competition authorities commonly have to assess how a merger affects market outcomes
+
+- One way for such an assessment is a structural econometric model that describes consumers’ preferences and firm’s strategies.
+
+- The visualization illustrates predictions off such a model that has been estimated with historical sales data for different European markets.
+
+- You will replicate such a study in one problem set and learn details of the methods
+
+#. frame Some applications of the methods covered in class
+
+- Marketing and business strategy, for determining optimal prices and product features and predicting competitors reactions
+
+- Competition policy, e.g. predicting the effects of a merger on market outcomes and total welfare
+
+- Planning of public projects, e.g. predicting the demand of new public transportation route
+
+- Environmental policy, determining the effects of subsidies or taxes on consumer behavior
+
+- International trade, predicting the effects of changes in tariffs and exchange rates on imports and exports in specific markets
+
+#. frame Some methods will we cover in this class
+
+  - Key ideas behind estimation methods and statistical tests
+  
+  - Difference between estimating causal effects (a main concern of econometrics) and pure prediction (main focus of machine learning)
+
+  - OLS, IV, GMM, Maximum Likelihood estimation
+  
+  - Machine Learning Methods (decision trees, random forst, cross-validation)
+  
+  - Discrete choice models
+
+#. frame R
+
+- We will extensively use the statistical programming language R to conduct
+
+  - simulation
+
+  - estimation
+
+  - machine learning
+
+  - data transformation and aggregation
+
+  - visualization of data and results
+
+- You will learn a lot of skills and tricks that are generally useful beyond this class and beyond your time as student
+
+- You don’t need previous knowledge in R but you should be willing to learn it and solve exercises on your computer
+
+#. frame R and RStudio
+
+- We will use R together with RStudio in this class
+
+  - R is a very popular statistical programming language
+
+  - RStudio is a convenient IDE that facilitates working with R
+
+  - R and RStudio are open source programs and are freely available
+
+
+#. frame Interactive R Problem Sets
+
+- During the course, you will be asked to solve and hand in, several interactive R problem sets.
+
+  - They are based on the package RTutor (written by me)
+
+  - You can immediately check your solution, get automatic feedback and can ask for hints.
+
+  - The goal is to provide a fun and effective way to learn R and the concepts of this course
+
+- The problem sets count a total of 10% of your final grade
+
+  - This shall be some extrinsic motivation to solve the problem sets.
+
+#. frame Further Ressources to Learn R
+
+- If you are a complete beginner to R, you may want to take a look at some further ressources to learn R. There is a huge amount of free teaching material online.
+
+- Here are some examples that cover similar material than our first RTutor problem set:
+
+  - https://www.datacamp.com/courses/free-introduction-to-r
+
+  - tryr.codeschool.com
+
+  - http://swirlstats.com/students.html
+
+  - https://www.teamleada.com/courses/r-bootcamp
+
+#. frame Final Exam
+
+How exactly examinations will take place depends on the development of the Corona outbreak.
+
+Here are the modalities from last year:
+
+- The final exam will determine 90% of your grade
+
+- If the class is sufficiently large, there will be a written exam
+
+  - Questions will be in English but you can answer in English or German
+
+- If the class is not too large, there may be an oral exam (mündliche Prüfung)
+
+  - You can freely decide whether you want to take the exam in English or German
+
+#. frame Questions:
+
+On the moodle page of the course is a Question and Answer forum. Please try to post your question there if there is a chance that it is also of interest to other students (which is the case for almost all questions.)
+
+In other cases send an email:
+
+- Lecturer: Sebastian Kranz (sebastian.kranz@uni-ulm.de)
+
+- Teaching Assistant: Clara Ulmer (clara.ulmer@uni-ulm.de)
+
+We possible then schedule a time to discuss the question via Phone or Skype.
+
+
+#. frame Optional Background Readings
+
+- Peter Kennedy: “A Guide to Econometrics”
+
+  - Gives a good introduction what econometrics is about
+
+- An open online textbook using R for an undergraduate econometric class by Florian Oswald, Jean-Marc Robin and Vincent Viers:
+  [https://scpoecon.github.io/ScPoEconometrics/](https://scpoecon.github.io/ScPoEconometrics/)
+
+- Train, Kenneth E.. 2009. “Discrete Choice Methods with Simulation.” Cambridge University Press, ed. 2.
+
+  - free download on Kenneth Train’s website\
+        <http://elsa.berkeley.edu/books/choice2.html>
+
+- Matt Taddy: "Business Data Science"
+  
+  - A nice modern overview of econometric and machine learning techinques for business relevant decisions. Book uses R.
+
+
+#. frame Is it the right course for me?
+
+- You learn a lot, but also have to invest considerably time and effort.
+
+- If you are not sure, just try out the course and see if you like it.
+
+
+

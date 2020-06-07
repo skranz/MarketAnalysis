@@ -1,0 +1,181 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_2b.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_2b.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_2b.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 2b of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+
+### Regression Trees
+
+#. youtube id="zBmLT4EB3fM", file="2b Interpreting Regression Tree.mp4"
+
+Take a look at the estimated regression tree from our slides: 
+
+#. img file="figures/tree.svg", style="max-width: 90%"
+
+#< quiz "regtree_pred1"
+question: |
+  What is the predicted price (in 1000 Euro) for a car registered in 2005 with a horse power of 250?
+sc: 
+  - 2.73
+  - 12.9*
+  - 4.97
+  - 3.23
+#>
+
+#< quiz "regtree_pred2"
+question: |
+  What is the share of cars registered before 2006?
+sc:
+  - 62.9%
+  - 3.23%
+  - 66.1%*
+  - We cannot see from the tree.
+#>
+
+
+#< quiz "regtree_pred3"
+question: |
+  What is the share of cars with fewer than 224 PS?
+sc:
+  - 62.9%
+  - 3.23%
+  - 66.1%
+  - We cannot see from the tree.*
+success: |
+  Correct. While we know that the share of cars that has been registered before 2016 and has less than 224 PS is 62.9%, we don't know the share of cars less than 224 PS that have been registered after 2016.
+#>
+
+### Estimating a regression tree
+
+#. youtube id="3QJxql2SrVM", file="2b Computing a Regression Tree.mp4"
+
+
+Remark: Take a look at the lecture slides to see how a split for a nominal variable is computed.
+
+### Regression trees and dummy variable regression
+
+#. youtube id="SglHUrS3Ruk", file="2b Regression Trees and Dummy Variable Regressions.mp4"
+
+#. section
+### Random forests
+
+#. youtube id="u8VO9ftsUQM", file="2b Random Forests and Gradient Boosted Trees.mp4"
+
+#< quiz "random"
+question: |
+  What are the random elements in a random forest? (Make a guess)<br>
+  A: Each tree is estimated with a data set that is randomly drawn with replacement from the training data set.<br>
+  B: We estimate several trees but pick a random subset of trees for the prediction.<br>
+  C: When training a tree, at each node only a random subset of variables is considered for the optimal split.
+sc: 
+  - Just A
+  - A and B
+  - A and C*
+  - A, B and C
+#>
+
+#. youtube id="GzkWfIUmlMw", file="2b Random Forests.mp4"
+
+
+#. section 
+
+### Heterogenous Treatment Effects and Causal Forests
+
+#. youtube id="1eVUr7n0pXs", file="2b Causal Forest Potential Outcomes.mp4"
+
+Assume we want to estimate heterogenoues treatments effects for males and females by estimating the following regression with interaction effects (recall Chapter 1c):
+
+$$y_i = \beta_0 + \beta_1 w_i + \beta_2 female_i + \beta_3 female_i \cdot w_i + \varepsilon$$
+
+#< quiz "het_regression"
+question: |
+  What would then be the estimated treatment effect for females?
+sc:
+  - \(\hat \beta_2\)
+  - \(\hat \beta_0\ + \hat \beta_2\)
+  - \(\hat \beta_3\)
+  - \(\hat \beta_1\ + \hat \beta_3\)*
+#>
+
+#. youtube id="0Tx58lklHSY", file="2c Heterogenous Treatment Effects.mp4"
+
+Assume we would run a lasso regression of the form
+
+$$y_i = \beta_0 + \beta_1 w_i + \beta_2 female_i + \beta_3 female_i \cdot w_i + ... + \varepsilon$$
+where the ... describes many more explanatory variables and interaction effects with the treatment indicator to account for heterogenous effects in many potentially relevant subgroups.
+
+#< quiz "lasso_for_tau"
+question: |
+  We know that a lasso regression can select relevant predictors and set other coefficients to 0. Would the selected interaction terms from running the lasso regression above yield relevant subgroups that have strong or weak treatment effects?
+sc:
+  - Probably yes, if we have sufficiently many observations.
+  - No. There is an obvious problem.*
+success: |
+  Correct. The problem is that the dependent variable is not the treatment effect $\tau_i =  y_i^{(1)} - y_i^{(0)}$ but only $y_i$. The lasso regression will select those predictors (interaction effects) that are helpful to predict $y_i$ not those that are helpful to predict $\tau_i$. People have thought of other approaches how lasso might help to estimate heterogeneous treatment effects. For example, in a perfectly randomized experiment one might consider first estimating $y_i^{(1)}(x)$ and $y_i^{(0)}(x)$ separately on the treatment and control group via lasso and then compute the difference of those predicted values as an estimate for $\hat \tau(x)$. But we won't study corresponding econometric literature in this course.
+#>
+  
+
+### Causal Tree
+
+#. youtube id="vPxRUsvU-iE", file="2b Causal Tree Prediction.mp4"
+
+
+Assume that in a particular leaf of a causal forest, we have the following training data observations:
+
+#< ignore
+| w | y  |
+|---|----|
+| 0 | 10 |
+| 0 | 12 |
+| 1 | 5  |
+| 1 | 7  |
+| 1 | 3  |
+#>
+<table style="border-collapse:collapse;border-spacing:0;margin:0px auto" class="tg"><tbody><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">w</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">y</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">0</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">10</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">0</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">12</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">1</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">5</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">1</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">7</td></tr><tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">1</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">3</td></tr></tbody></table>
+#< quiz "causal_leaf"
+question: |
+  What would then the predicted value for an observation falling into this leaf?
+sc:
+  - -6*
+  - 5 or 11 depending on whether the observation is treated or not
+  - 6
+  - 7.4
+success: |
+  Correct. We have in this leaf $\bar y^{(1)} = (5+7+3)/3 = 5$ and $\bar y^{(0)} = (10+12)/2 = 11$. Hence the predicted treatment effect for observations falling into this leaf is $\hat \tau = \bar y^{(1)}-\bar y^{(0)} = 5-11=-6$
+#>
+
+### Training a causal tree
+
+#. youtube id="Jx4aeMP8Oi8", file="2b Training Causal Tree.mp4"
+
+#< quiz "honesty_looses"
+question: |
+  Does the fact that honest predictions use only half of the observations in a tree make the predictions of a causal forest less precise compared let's say to a random forest?
+sc:
+  - Probably yes.
+  - Probably not.*
+success: |
+  Correct. Watch the next video why in a forest we don't really loose observations because of honesty. The predictions in a causal forest may be less precise than in a causal forest for other reasons than honesty though. It can simply be harder to predict an unobservable treatment effect than predicting an observable variable $y$.
+#>
+
+### Discussion of Honesty
+#. youtube id="kTa0IsBI42M", file="2b Causal Forest Before R.mp4"
+
+### R Simulation of a causal forest
+#. youtube id="BIqvwu6skbw", file="2b Causal Forest R Simulation.mp4"
+
+### Discussion: Searching for Subgroups and Endogeneity Problems
+
+#. youtube id="9ASGFbKeqP4", file="2b Discussion Causal Forest.mp4"
+
+That's all. So it's a good time to start the RTutor problem set...

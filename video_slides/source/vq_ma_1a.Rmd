@@ -1,0 +1,116 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_1a.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_1a.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_1a.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 1a of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University.
+
+
+### Video: Bob's Ice Cream Business
+
+#. youtube id="SDwnjgEIue4", file="MA 1a Slides 2-4 Bobs Ice Cream Business.mp4"
+
+Note: If you like you can press on the fullscreen button at the menu bar of the video. You can also increase the Zoom of your browser window. (In Chrome you have to press Ctrl and "+".)
+
+### Questions
+
+#< quiz "demand_slope"
+question: |
+  Has the relationship between price p and sold quantity q the slope that one would expect from a demand curve?
+sc:
+  - yes
+  - no*
+success: |
+  Correct. We expect demand functions to be downward sloping. Higher prices should -ceteris paribus- (everything else constant) lead to lower sales. So either we have a weird demand function or ... the positive relationship we see between prices and quantity in the data is NOT a demand function.
+#>
+
+#< quiz "emma_rational"
+question: |
+  Could Emma's prices in the data reasonably have been her profit maximizing prices?
+sc:
+  - yes*
+  - no
+success: |
+  Correct. Some people may too quickly interpret the data such that higher prices *cause* higher sales. Then Emma's prices would indeed have been too low. But the graph does only show a *relationship* between prices and sold amount, not a causal effect (and not a demand function). Indeed, we have simulated the data from a model with a downward sloping demand function in which Emma sets profit maximizing prices. We will explain this below.
+#>
+
+
+### Discussion of the positive relationship between price and quantity
+
+#. youtube id="ev9b2qPgiqM", file="MA 1a Slide 4 Part 2.mp4"
+
+#. section
+
+### An economic model
+
+#. youtube id="BxlqbL0hPXg", file="MA 1a Slides 5-9 Model of Demand and Profit Maximizing Prices.mp4"
+
+
+### Simulating the model in R
+
+#. youtube id="--dHk5mOOWM", file="MA 1a R simulation 1.mp4"
+
+#< quiz "code_error_b"
+question: |
+  What do you think was wrong in the R code and let to the negative prices in the previous video?
+sc:
+  - The costs c were drawn wrongly.
+  - A mistake in the formula of the profit maximizing price p.
+  - A parameter a or b of the demand function was wrongly defined.*
+  - The standard deviation of eps was too large.
+#>
+
+Ok, let's continue and take a look at what was wrong...
+
+#. youtube id="0yL6HI26_jk", file="MA 1a R simulation 2.mp4"
+
+#< quiz "eps_going_to_zero"
+question: |
+  Make a guess. What do you think will the relationship between prices and quantities look like if the standard deviation of the demand shock is almost zero?
+sc:
+  - We still have a positive relationship.
+  - Both variables are uncorrelated.
+  - We find a negative relationship.*
+success: |
+  Indeed, if price (almost) only vary because the costs differe between periods,we now find a negative relationship between optimal prices and resulting quantity. Indeed the curve looks almost like the demand function. Take a look in the next video.
+#>
+
+#. youtube id="dQhDKL05BeI", file="MA 1a R simulation 3.mp4"
+
+#. section
+
+### A Pricing Experiment and Estimation of the Demand Function
+
+
+#. youtube id="GirxmQLBvfo", file="MA 1a Slides 12-14 Insights so far and Pricing Experiment.mp4"
+
+### A Pricing Experiment in R Part 1
+
+#. youtube id="TsVu2s70R78", file="MA 1a R pricing experiment 1.mp4"
+
+### Estimating demand function for pricing experiment
+
+#. youtube id="d4OSPf8vrV0", file="MA 1a R pricing experiment 2.mp4"
+
+### What if we run the linear regression for simulated data with profit maximizing prices?
+
+#< quiz "optimal_prices_consistent"
+question: |
+  In the video below, we will run the linear regression for a simulated data set where we choose profit maximizing prices instead of random prices. Do you think that our linear regression then consistently estimates the true parameters `beta0=100` and `beta1=-1` of our demand function?
+sc:
+  - yes
+  - no*
+#>
+
+
+#. youtube id="4p4szTrvUM4", file="MA 1a R pricing experiment 3.mp4"
+
+Great, you have finished the video lecture for Chapter 1a. Note that the slides contain some additional summary of what we have done and will do next. If you have not done so, start now working on the RTutor problem set for Chapter 1a!

@@ -1,0 +1,354 @@
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE' # set to your user name
+
+# To check your problem set, run the 
+# RStudio Addin 'Check Problemset'
+
+# Alternatively run the following lines
+library(RTutor)
+ps.dir = getwd() # directory of this file
+ps.file = 'ps_1d.Rmd' # name of this file
+check.problem.set('ps_1d', ps.dir, ps.file, user.name=user.name, reset=FALSE)
+```
+
+
+
+## Exercise 1 
+
+In this exercise we want to explore regressions with categorial explanatory variables, p-values and false discovery rates using a typical marketing data set.
+
+a) Load the file `lightbeer.Rds` into a variable `dat` and call `head` on `dat`.
+
+```{r "1__a"}
+
+# enter your code here ...
+
+```
+
+This data set was created from a Nielsen Homescan data set that Matt Taddy provided here https://github.com/TaddyLab/MBAcourse. The market research company Nielsen explains: "We collect purchase data from panelists who take inventory of the products they buy using handheld and mobile scanners."
+
+Observations in our data set consist of participating households who bought within some time period at least one bottle of light beer from one of 5 large brands. First we consider 3 columns:
+
+- household: an anonymous id of the household
+- total_spend: the total amount of US-$ the household spend on light beer in the sample period.
+- total_floz: the total volume of light beer the household bought in the sample period. A floz is a US fluid ounce, which is 0.0295735 litres.
+
+In addition there are many demographic variables of the household, like the `income` range.
+
+b) Complete the code below to add to `dat` the column `avg_price` that shall contain the average price in dollar per litre light beer each household paid:
+
+```{r "1__b"}
+library(dplyr)
+
+dat = mutate(dat, avg_price = ___ *(1/0.0295735)) 
+
+# enter your code here ...
+
+```
+
+This average price per litre can differ for many reasons, including the beer brand, the container size, or the shop were the beer has been bought. 
+
+c) 
+We now want to study with a linear regression how the average price paid relates to the income of a household. Call first the function `class` on the column `income` of `dat`.
+```{r "1__c"}
+
+# enter your code here ...
+
+```
+
+The class `factor` is similar to a `character`, but behaves in some aspects differently (sometimes this can be annoying, other times useful). Call the function `levels` on it to see the different income categories in our data set:
+
+```{r "1__c_2"}
+
+# enter your code here ...
+
+```
+
+Now estimate with `lm` a simple linear regression of `avg_price` on `income`. Save the result in `reg` and show `reg`.
+
+```{r "1__c_3"}
+
+# enter your code here ...
+
+```
+
+We see estimated coefficients for the different income categories. Is there a coefficient for *every* income category?
+
+```{r "1__c_4"}
+# Type "yes" or "no" (including the ")
+
+# enter your code here ...
+
+```
+
+The first income category `under20k` is missing from the regression summary.
+
+When we estimate with `lm` a linear regression of y on x where x is a categorial variable (`factor` or `character`) with M different categories, then R actually estimates the following regression:
+
+    y = beta_0 + beta_2 * d_2 + ... + beta_M * d_M + eps
+
+where `d_m[t]` is a dummy variable that is equal to 1 if `x[t]` is equal to the `m`th category and otherwise 0. The first category is called "reference category" and will always be left out from the regression. In our example, the reference category is `under20k`.
+
+If there are no other control variables, the constant `beta_0` measures the expected value of the dependent variable `y` given that `x` has the reference category.
+
+Look again at the result of `reg`. Save in the variable `answer` the average price paid per litre for households with yearly income below 20k Dollar (rounded to 2 digits).
+```{r "1__c_5"}
+
+# enter your code here ...
+
+```
+
+The coefficient `beta_m` measures by how many units the expected value of `y` changes if the categorial variables has the `m`th category instead of the first category.
+
+Look again at the result of `reg`. Save in the variable `answer` the average price paid per floz for households with yearly income in the range of 100-200k Dollar (rounded to 2 digits).
+
+```{r "1__c_6"}
+
+# enter your code here ...
+
+```
+
+d) Show now a summary of our regression `reg`
+
+```{r "1__d"}
+
+# enter your code here ...
+
+```
+
+For how many categories do we estimate a coefficient that is significantly different from 0 with a p-value below 5%?
+
+```{r "1__d_2"}
+
+# enter your code here ...
+
+```
+
+The little stars * on the right indicate whether the p-value is below some threshold: *  means a p-value below 5%,  ** below 1% and *** below 0.1%.
+
+e) Consider the following interpretation of the regression results:
+
+> We find that households with middle class income between 60k-200k pay significantly more per litre of beer (p-value < 5%) than low income households. But very high income households 200k+ don't pay significantly more than low income households. This suggests that very high income households are better in avoiding high prices for day-to-day products like beer than middle class households.  
+
+Is the suggested conclusion sensible?
+
+```{r "1__e"}
+# Type "yes", "no" or "somewhat"
+
+# enter your code here ...
+
+```
+
+In empirical analysis you should not be a "stargazer" that only looks at the significance stars of estimated coefficients (yes, the name of the `stargazer` package is ironic). First look at the estimate itself, then at the standard error and perhaps only afterwards pick a glance at the stars.
+
+Even though not signficant, the estimated coefficient for the category `200k+` is larger than for all other income categories. However, it is not statistically significantly different from 0, because we estimate it less precisely with a standard error more as twice as large as for all other coefficients.
+
+What could be the reason for the large standard error for the coefficient of the highest income category? Call the function `table` for the column `income` of `dat`.
+
+```{r "1__e_2"}
+
+# enter your code here ...
+
+```
+
+The command shows how many observations we have for each income category. A likely reason that we can estimate the effect for the highest income category `200k+` less precisely is that we only have 123 observations while there are 1521 observations for the category `100-200k`.
+
+This should make clear that the suggested conclusion from the fictious quote above is completely wrong. Just because we have fewer observations for high income households and therefore higher standard errors, does in no way imply that high income households pay less for beer than middle-class households.
+
+f) Assume we would rerun the regression but change the reference category from the lowest income category `under20k` to the highest income category `200k+`. Which sign would you expect for the coefficients of other income categories?
+
+```{r "1__f"}
+# Type "positive" or "negative"
+
+# enter your code here ...
+
+```
+
+Run the following code to perform such a regression:
+```{r "1__f_2"}
+# The function relevel sets the 
+# first category of our factor variable
+dat$income = relevel(dat$income,"200k+")
+
+# Verify that categories have now a different
+# ordering
+levels(dat$income)
+
+# Run regression again
+summary(lm(avg_price ~ income, data=dat))
+```
+
+With the highest income group as reference level, the coeficients of all other income groups are now negative. All other income groups pay on average a lower price per beer in our sample than the highest income households.
+
+Note that the standard errors are now larger than before and we don't have any statistically significant coefficient for any income group anymore. The higher standard errors are likely due to the fact, that the new reference category `200k+` has so little observations. 
+
+g) The data set also contains the shares of a household's light beer expenditures for the 5 brands Bud Light, Busch Light, Coors Light, Miller Lite and Natural Light.
+
+Assume you want to study how certain demographic characteristics of the households relate to the expenditure share for the brand Natural Light. You run the following regression below: 
+
+```{r "1__g"}
+reg2 = lm(share_natural ~ income+age+ethnic+employment+degree, data=dat)
+summary(reg2)
+```
+
+We find a lot of significant effects, higher income reduce the expenditure shares, higher age inceases it, beeing black increases it and having a college degree reduces it compared to a high school degree.
+
+Of course, if we test a lot of coefficients as above, we will also find some significant ones just by chance. One can take this into account just informally when interpreting p-values, or also formally adjust for the multiple testing problem. 
+
+h) Let us exemplify the Benjamini-Hochberg procedure to check how many significant coefficients remain if we want to have a false discovery rate (FDR) of max. 5%. More precisely, when applied to many independent tests, that procedure guarantees that on average at most 5% of the chosen coefficients are in truth not significant.
+
+First we want to have our regression results in a nice data frame. Load the library `broom`, then call the function `tidy` on `reg2` and save the result in `res`. Finally show `res`:
+```{r "1__h"}
+
+# enter your code here ...
+
+```
+
+Now load `dplyr` and use `arrange` to sort `res` increasingly in its p-value. The result shall be stored again in `res`. 
+
+```{r "1__h_2"}
+
+# enter your code here ...
+
+```
+
+Now follow the steps described in the following chunk.
+```{r "1__h_3"}
+
+# 1. We specify a false discovery rate of max 5%
+fdr.max = 0.05
+
+# 2. Let n be the number of coefficients
+
+
+# 3. We compute the BH threshold fdr * k/n
+# Just remove the comment below once you 
+# have computed n
+
+# res$bh.threshold = fdr.max * (1:n)/n
+
+# 4. Now add to res the column bh.ok 
+# that is a logical variable that is TRUE
+# if p.value is below or euqal to bh.treshold
+
+# 5. Finally show res
+
+
+# enter your code here ...
+
+```
+
+We see that not all coefficients with p-value below 5% but only 4 of them (all have a p-value below 2%) should be considered significant if we control the false discovery rate at 5%. 
+
+
+# Diagnostic Tests for Instrumental Variable Estimation
+
+In the following three exercises explore 3 diagnostic tests for instrumental variable estimation. 
+
+## Exercise 2.1 -- Wu-Hausman Test
+
+a) Which of the following is the correct null hypothesis of the Wu-Hausman Test for the regression model?
+
+  y = beta0 + beta1 * x1 + beta2 * x2 + eps
+
+  
+1. H0: At least one explanatory variable is endogenous.
+
+2. H0: At least one explanatory variable is exogenous.
+
+3. H0: All explanatory variables are endogenous.
+
+4. H0: All explanatory variables are exogenous.
+
+Assign the correct number 1-4 to the variable `answer`
+```{r "2_1_a"}
+answer = ___
+
+# enter your code here ...
+
+```
+
+
+b) Consider the code below that simulates data and then estimates via IV the following model:
+
+  y = beta0 + beta1*x + eps
+
+The variables z1 and z2 are used as instruments for x. Change the code that generates x, z1 and / or z2 such that the Wu-Hausman test for endogenous explanatory variables has a p-value below 1%.
+
+```{r "2_1_b"}
+T = 1000
+beta0 = 100; beta1=1
+eps = rnorm(T,0,1) # demand shocks
+# You can change the code for z1, z2 and / or x 
+z1 = rnorm(T,0,1)
+z2 = rnorm(T,0,1)
+x = rnorm(T,0,1) + z1 + z2
+y = beta0 + beta1*x + eps
+library(AER)
+iv = ivreg(y~x | z1+z2)
+summary(iv, diagnostics=TRUE)
+
+# enter your code here ...
+
+```
+
+
+## Exercise 2.2 -- Effective Sargan test
+
+Change the code for z1, z2 and / or x below such that the Sargan test for endogenous instruments has a p-value below 1%
+```{r "2_2"}
+T = 1000
+beta0 = 100; beta1=1
+eps = rnorm(T,0,1) # demand shocks
+# You can change the code for z1, z2 and / or x 
+z1 = rnorm(T,0,1)
+z2 = rnorm(T,0,1)
+x = rnorm(T,0,1) + z1 + z2
+y = beta0 + beta1*x + eps
+iv = ivreg(y~x | z1+z2)
+summary(iv, diagnostics=TRUE)
+
+# enter your code here ...
+
+```
+
+## Exercise 2.3 -- Ineffective Sargan test
+
+Change the code for z1, z2 and / or x below such that the Sargan test shall fail to reject the null hypothesis that both z1 and z2 are exogenous (your p-value shall be above 5%). At the same time at least one of your instruments shall be strongly endogenous and have a correlation with eps of at least 0.3.
+```{r "2_3"}
+T = 1000
+beta0 = 100; beta1=1
+set.seed(1234567) # you may change the random seed
+eps = rnorm(T,0,1) # demand shocks
+# You can change the code for z1, z2 and / or x 
+z1 = rnorm(T,0,1)
+z2 = rnorm(T,0,1)
+x = rnorm(T,0,1) + z1 + z2
+y = beta0 + beta1*x + eps
+iv = ivreg(y~x | z1+z2)
+summary(iv, diagnostics=TRUE)
+
+# enter your code here ...
+
+```
+
+You see that even though the Sargan test cannot reject that your instruments are exogenous, still your instruments may be quite endogenous and your IV estimator will be biassed and inconsistent.
+
+## Summary
+
+Even though Sargan and Wu-Hausman tests can sometimes detect endogeniety problems, you should always use common wisdom, think about details of the application and use economic theory to assess whether there could be unresolved endogeniety problems when you want to estimate causal effects.
+
+
+## Submitting your solution
+
+To submit your problem set first check it via Addins -> "Check Problemset" and then run the following command in the R console:
+
+    make.submission()
+
+It checks again your whole problem set and generates a file of the form `problemsetname__username.sub` that contains your solution and log files.
+Now submit this file for the corresponding assignment on Moodle. 
+Please do not change the name of the file.
+
+** Make sure that you upload the .sub file to Moodle, not some file with another extension!**

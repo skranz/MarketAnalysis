@@ -1,0 +1,325 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_1d.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_1d.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_1d.Rds")
+```
+#>
+
+
+
+#. section
+
+Videos and questions for Chapter 1d of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+### Hypotheses Tests and t-test
+
+
+#. youtube id="97P8TVFT6aI", file="1d Hypothesis Test and t-statistic.mp4"
+
+Take a look at the t-value:
+$$t_k = \frac {\hat\beta_k} {\hat sd(\hat\beta_k)}$$
+
+#< quiz t_mean
+question: | 
+  Assume H0: $\beta_k = 0$ and all assumptions (A1)-(A4) of the linear regression model hold true. Which statement is then true for our test statistic (t-value) $t_k$ if we see it as a random variable?
+sc: 
+  - The expected value of \(t_k\) is 0.*
+  - The expected value of \(t_k\) can be different to 0.
+  - A test statistic like \(t_k\) does not have an expected value
+success: |
+  If all assumptions of the linear regression model hold true, then our estimator $\hat \beta_k$ is unbiassed, i.e. $E \hat \beta_k = \beta_k$. And if H0 holds true, we have $\beta_k=0$, i.e. we have $E \beta_k = 0$. Hence the expected value of the numerator of $t_k$ is 0. One can show that the denominator does not make things weird and indeed also the expected value of our test-statistic $t_k$ is then 0. But that only is the case if the null hypothesis $H_0$ is indeed true.
+#>
+
+The t-statistic essentially normalizes the estimated coefficient $\hat \beta_l$ by its estimated standard deviation. 
+
+#< quiz normalize
+question: |
+  Assume you have any random variable $x$. What is the standard deviation of the normalized random variable $z=\frac x {sd(x)}$ that divides $x$ by its standard deviation?
+sc:
+  - The standard deviation of \(z\) is the squareroot of the standard deviation of \(x\).
+  - The standard deviation of \(z\) is 1.*
+#>
+
+#. youtube id="aIGshz2qqKQ", file="1d t-test2.mp4"
+
+### p-value
+
+#. youtube id="cGb5X1YUv28", file="1d p-value.mp4"
+
+#< quiz p_value_1
+question: |
+  What more strongly suggests that a null hypothesis H0 is false?
+sc:
+  - A low p-value*
+  - A high p-value
+#>
+
+#. youtube id="lR5nuG3IIdk", file="1d significance and confidence intervals.mp4"
+
+#. section
+
+#### Quiz questions about p-values
+
+#< quiz p_evidence_against_HO
+question: |
+  Assume the null hypothesis H0 is rejected at a significance level $\alpha = 0.1\%$ (p ≤ 0.001). Is this strong evidence that H0 is false?
+sc: 
+  - yes*
+  - no
+#>
+
+#< quiz p_evidence_for_HO
+question: |
+  Assume the null hypothesis H0 is not rejected and we find a p-value of p = 0.999. Is this strong evidence that H0 is true?
+sc: 
+  - yes
+  - no*
+success: |
+  Correct. Typically, a hypothesis test can only provide strong evidence against a null hypothesis. Even a large p-value does not mean that the null hypothesis is likely true, we just cannot say that it is likely false. For example, assume we have the null hypothesis $\beta_1=0$ and a very small t-value like $t=0.01$ that yields a high p-value. It could be that H0 is true. But it could also be that in truth $\beta_1$ just has a small value, like $\beta_1=0.0001$. One may argue that a high p-value suggests that $\beta_1$ is not too far away from 0. Yet, such a statement can be made much more precise by looking at the 95% or 99% confidence interval of $\hat \beta_1$ instead of looking at the p-value.
+#>
+
+
+
+#< quiz p_as_prob
+question: |
+  Assume a null hypothesis H0 is rejected at a significance level $\alpha = 5\%$ (p ≤ 0.05). Does it mean that the probability that H0 is true is equal to or smaller than 5%?
+sc:
+  - yes
+  - no*
+success: |
+  Correct. This question is often answered wrongly and goes deep into subtleties of statistics and the meaning of probability. If you are interested in more background you can read the long explanation below (you can also ignore it, if you like):
+
+  Significance tests are in some sense a very sneaky concept. They are used because we want to learn something about the probability that a null hypothesis about the true data generating process is true. And it is correct that lower p-values are statistically evidence that H0 is less likely to be true. So it is really suggestive to interpret a p-value of 5% to mean that the probability of H0 being true is 5%. 
+  
+  But the correct interepration is the following: A p-value of 5% means that *if H0 were true*, the probability to get a realization of the test-statistic like ours or a more extreme one is only 5%. This is *not* the same as saying that the probability that H0 is true is only 5%.
+  
+  Hypothesis tests don't yield objective probabilities about whether a null hypothesis is true or false. Indeed, it is typically not clear what an objective probability about a fact of the real world (or a true parameter of a data generating process) should mean. Probability assessments are rather subjective and depend on the information and beliefs of the person that makes the assessment.
+  
+  For example, assume I throw a dice and don't show it to you. What is the probability that this dice shows a 1? For you, who has not seen the dice it is 1/6. Assume I tell Bob that the dice is either a 1 or a 2. Bob then likely believes the dice shows a 1 with 50% probability. For me the probability that the dice is 1 is either 100% or 0%. So all of us have a different probability assessment of whether the dice actually shows a 1 or not.
+  
+  There is another branch of statistics called Bayesian statistics that makes probability assessments about the true parameters of data generating process like $\beta_1$. It assumes that we initially have some prior belief about the distribution of $\beta_1$ and then tells us how we should update our probability assessments if we observe new data. Bayesian statistics has some philosophical appeal because we really would like to make statements about probabilities of model parameters. But Baysian statistics also has the huge drawback that the results depends a lot on how we model the prior beliefs for which there is little objective guidance. We won't cover Bayesian statistics in this class.
+#>
+
+If you understand the following comic, you probably also understand the answer to the question above:
+
+[http://xkcd.com/1132/](http://xkcd.com/1132/)
+
+#. youtube id="SMl429Qvxdg", file="1d xkcd sun exploded.mp4"
+
+#. section
+
+### Multiple Testing
+
+Take a look at the following xkcd comic
+
+[https://xkcd.com/882/](https://xkcd.com/882/)
+
+### Replication Crisis, Publication Bias and Multiple Testing
+
+#. youtube id="XVO8vSZCNeE", file="1d Replication Crisis and Co.mp4"
+
+### Measures for more robust scientific insights
+
+#. youtube id="hpQZiLic8-g", file="1d Measures for More Robust Scientific Insights.mp4"
+
+### Misrepresentation in business and other domains
+
+#. youtube id="H-CuEg-2Lpk", file="1d Misrepresentation in Business.mp4"
+
+### Controlling the false discovery rate
+
+#. youtube id="_ytpr2O3R1k", file="1d Controlling False Discovery Rate.mp4"
+
+
+#. section  
+
+### Diagnostic tests
+
+While t-tests as discussed above are typically use to make discoveries, *diagnostic tests* are mainly used to check whether some assumptions of an econometric model are likely to be violated.
+
+We will look at 3 diagnostic tests for instrumental variable estimation:
+
+  - Weak instruments test
+  - Wu-Hausman test
+  - Sargan test
+
+
+### Weak Instruments and Wu-Hausman Tests for Instrumental Variable Estimation
+
+#< quiz weak_iv_1
+question: |
+  Is the weak instrument test a test about the relevance condition or about the exogeniety condition of our instrumental variable $c$?
+sc:
+  - It's about the relevance condition.*
+  - It's about the exogeneity condition.
+success: |
+  Correct. It's about the relevance condition that $cor(p,c) \ne 0$. This correlation should not only be non-zero but also sufficiently strong.
+#>
+
+#. youtube id="8wUpiPSny4w", file="1d Weak Instrument Test 1.mp4"
+
+
+#< quiz weak_iv_2
+question: |
+  What do you think is the null hypothesis of the weak instruments test we have run?
+sc:
+  - \(cor(p,c)=0\)*
+  - \(cor(p,c) \ne 0\)
+success: |
+  Correct. Note that a null hypotheses almost never have an unequal sign \(\ne\). Null hypotheses are formulated such that one can reject them with a sample of data. But it is kind of impossible to reject a null hypothesis of the form \(cor(p,c) \ne 0\), because we can never distinguish from a sample of data whether some true correlation between two variables is really exactly 0 or just very close to 0. 
+#>
+
+#. youtube id="4dafWaArH2k", file="1d Weak-Instrument 2 and Wu Hausman 1.mp4"
+
+#< quiz wu_hausman_1
+question: |
+  What is the null hypothesis of the Wu-Hausman test?
+sc:
+  - At least one explanatory variable is endogenous
+  - At least one explanatory variable is exogeneous
+  - All explanatory variables are exogeneous*
+success: |
+  Correct. We won't have tests were the null hypothesis is that a variable is endogenous, because that would involve an inequality $\ne$. In our example $p$ is endogenous if $cor(p,\varepsilon)\ne0$.
+#>
+
+
+In the code example above, we found the diagnostic test results:
+```
+Diagnostic tests:
+                 df1 df2 statistic p-value    
+Weak instruments   1 497 3.174e+02  <2e-16 ***
+Wu-Hausman         1 496 8.015e+29  <2e-16 ***
+````
+
+#< quiz wu_hausman_2
+question: |
+  Do the results suggest that an OLS estimator of the demand function would be consistent or inconsistent?
+sc:
+  - OLS is probably inconsistent.*
+  - OLS is probably consistent.
+success: |
+  Correct. We have a very low p-value for the Wu-Hausman test. Hence we can signficiantly reject the null hypothesis that $p$ and $s$ are both exogenous. This strongly suggests an endogeneity problem in which case the OLS estimator is inconsistent.
+#>
+
+In our simulation we had the following code to generate the prices:
+
+```{r eval=FALSE}
+if (runif(1)<0.5) {
+  # Profit maximizing prices
+  p = (beta0+eps+beta2*s) / (-2*beta1) + c/2
+} else {
+  # Random markup above costs
+  p = c*runif(T, 1, 1.1)
+}
+```
+
+So we draw a random variable by calling `runif` if it is below 0.5, we choose profit maximizing prices and otherwise prices are just a markup above costs.
+
+
+#< quiz wu_hausman_3
+question: |
+  What does the result of the Wu-Hausman test suggest of how prices were actually drawn in our simulation?
+sc:
+  - Prices were profit maximizing.*
+  - Prices were a random markup above cost.
+success: |
+  Correct. The Wu-Hausman test result suggests endogenous prices and if we only have those two alternatives this would mean profit maximizing prices.
+#>
+
+#. youtube id="FBtZIHt1X84", file="1d Wu-Hausman Test 2.mp4"
+
+### Another Wu-Hausman Test example
+
+Look at the following alternative simulation code:
+
+```{r eval=FALSE}
+T = 500
+beta0 = 100
+beta1 = -1
+beta2 = 30
+eps = rnorm(T, 0, 7)
+c = runif(T,10,30) + eps
+s = sample(0:1, T, replace=TRUE)
+p = runif(T, 20,40)
+q = beta0 + beta1*p + beta2*s + eps
+```
+
+#< quiz "iv_p_exo"
+question: |
+  What holds true for our simulated ice cream demand above?
+sc:
+  - prices and cost are exogenous
+  - prices are exogenous, cost endogenous*
+  - prices are endogenous, cost exogenous
+  - prices and cost are endogeneos
+#>
+
+When we run the IV regression we get the following output
+
+```{r eval=FALSE}
+summary(ivreg(q~p+s | c+s), diagnostics=TRUE)
+```
+
+```
+Call:
+ivreg(formula = q ~ p + s | c + s)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-190.637  -97.356    5.399  101.379  188.391 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  -450.75     513.90  -0.877   0.3809   
+p              17.34      17.10   1.014   0.3111   
+s              34.35      10.76   3.192   0.0015 **
+
+Diagnostic tests:
+                 df1 df2 statistic p-value    
+Weak instruments   1 497     1.156   0.283    
+Wu-Hausman         1 496   629.108  <2e-16 ***
+Sargan             0  NA        NA      NA    
+```
+
+Even though the price is exogenous, our Wu-Hausman test rejects the null hypothesis. That is because the instrument is endogenous. One can therefore think of the Wu-Hausman test testing the joint null hypothesis that all explanatory variables and all instruments are exogenous.
+
+Note that in this example the OLS estimator would be consistent while the IV estimator is inconsistent.
+
+#. section
+
+### The Sargan Test for Instrumental Variable Estimation
+
+The third diagnostic test is the Sargan tests which (sometimes) can detect endogeneity problems of the instruments. 
+
+#< quiz sargan_h0
+question: |
+  What is the null hypothesis of the Sargan test? Make an educated guess.
+sc:
+  - All instruments are exogenous*
+  - All instruments are endogenous
+  - At least one instrument is exogenous
+  - At least one instrument is endogenous
+#>
+
+#. youtube id="3owy2euyYIM", file="1d Sargan 1.mp4"
+
+#< quiz sargan_2
+question: |
+  What do you think is more likely for our simulation above. 
+sc:
+  - The Sargan test has a p-value below 5%
+  - The Sargan test does not have a p-value below 5%*
+success: |
+  Correct. In our simulation above all instruments `z1`, `z2` and `s` are exogenous. Thus the null hypothesis of the Sargan test is satisfied. The probability to find a p-value below 5% is therefore just 5%. 
+#>
+
+### Examples where the Sargan test works and where it does not work
+
+#. youtube id="gSzA8myAJDY", file="1d Sargan 2.mp4"
+
+
+That's it for Chapter 1d. If you have not started yet with the corresponding RTutor problem set, now would be a good time!

@@ -1,0 +1,198 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_2a.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_2a.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_2a.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 2a of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+### Predicting y vs estimating \(\beta\)
+
+#. youtube id="lOn8QyUv1p0", file="2a Predicting y vs estimating beta.mp4"
+
+#< quiz linreg_is_pred
+question: |
+  Can a linear regression model also be used for pure prediction?
+sc:
+  - yes*
+  - no
+#>
+  
+### Machine Learning
+  
+#. youtube id="nHMkvfH5jpU", file="2a Machine Learning.mp4"
+
+#< quiz ml_for_causal
+question: |
+  Can machine learning methods like random forests or lasso regression can only be used for prediction problems or can they also help to estimate causal effects?
+sc:
+  - Only for prediction
+  - They can also help to estimate causal effects*
+success: |
+  Correct. While the methods have been initially developed for pure prediction problems, they can also help to estimate causal effects. This is a very active field of modern research in econometrics and machine learning. We will (probably) come back to this later in the course. For the moment we focus on prediction problems, however.
+#>
+  
+#. section
+
+### Polynomial Example
+
+#. youtube id="Dy3jjSTXwJo", file="2a Polynomial Example 1.mp4"
+
+#< quiz "poly_train"
+question: |
+  Which model will make the *best* predictions for the *training data set*?
+sc:
+  - The linear model 1
+  - The quadratic model 2
+  - The octic model 3*
+#>
+
+#. youtube id="AOrS5jqUbkc", file="2a Polynomial 2.mp4"
+
+#< quiz "poly_test"  
+question: |
+  Which model will make the *worst* predictions for the *test data set*? Make a guess...
+sc:
+  - The linear model 1
+  - The quadratic model 2
+  - The octic model 3*
+#>
+  
+#. youtube id="nHv859d-MK0", file="2a Polynomial 3 and MSE.mp4"
+
+### Root mean squared error
+
+#< quiz rmse_formula
+question: |
+  Instead of using the MSE to assess prediction accuracy on the test sample, one often uses the so called root mean squared error (RMSE). What  is the formula for the sample RMSE? Make a guess:
+sc:
+  - \(RMSE = \frac {1} {n} \sum_{i=1}^n \sqrt{(\hat y_i - y_i)^2}\)
+  - \(RMSE = \sqrt{\frac {1} {n} \sum_{i=1}^n (\hat y_i - y_i)^2}\) *
+success: |
+  Correct. The first formula makes little sense, if I would take the sqare root directly around the square, both would cancel and we would only have only the mean value of $\hat y_i - y_i$ inside the sum. This would be an estimate of the bias of our prediction model, bu there would no need to add "root" and "squared" in its name. 
+#>
+
+#. youtube id="4v_MXe0A7vw", file="2a RMSE.mp4"
+
+#. section
+
+### Lasso Regression
+
+#. youtube id="0iZXOJycTio", file="2a Lasso 1.mp4"
+
+#< quiz "lasso_zero_lambda"
+question: |
+  Assume we would estimate a Lasso regression with a regularization parameter $\lambda=0$. Would then the lasso estimator be identical to the OLS estimator?
+sc:
+  - yes*
+  - no
+#>
+
+Note that the R code of simulation studied in the following videos is available on Moodle. (This time there is no need to hide the code since the RTutor problem set is fairly different.).
+
+#. youtube id="MujCe1AmhJ8", file="2a Lasso 2 R.mp4"
+
+#< quiz "lasso_why_only_2"
+question: |
+  Why do we only see two estimated coefficients in our output of the lasso model?
+sc:
+  - All other estimated lasso coefficients have the value 0 and are ommited.*
+  - The tidy function shows by default only 2 coefficients.
+  - We made an error when construction the matrix X.
+#>
+
+
+#. youtube id="FoUvmGdvG-k", file="2a Lasso 3 R.mp4"
+
+#< quiz "lasso_small_lambda"
+question: |
+  What will is the outcome if we estimate the lasso model again with a lower value of `lambda` (just 0.1 instead of 1 as before)?
+sc:
+  - Now it could be that even fewer coefficients are non-zero
+  - We should get again two non-zero coefficients.
+  - It is likely that we now get more then two non-zero coefficients.*
+#>
+
+
+#. youtube id="2fmDZZE5BE0", file="2a Lasso 4 R.mp4"
+
+#< quiz "lasso_smallest_lambda"
+question: |
+  Which coefficients will be selected for very small `lambda` close to 0?
+sc:
+  - Typically all coefficients that are not equal to zero in the true model.
+  - Typically all coefficients including those that are zero in the true model.*
+#>
+
+
+#. youtube id="VGPpzKz9G7w", file="2a Lasso 5 R.mp4"
+
+Here you see again our results of computed RMSE for the 4 considered values of `lambda`:
+```
+unlist(rmse.li)
+lambda_0.001  lambda_0.01   lambda_0.1   lambda_0.5 
+  0.010079667  0.010153556 0.005719416  0.002839564
+```
+
+#< quiz "best_lambda" 
+question: |
+  Which would be the best value of lambda out of the 4 above according to the results shown above?
+sc:
+  - 0.001
+  - 0.01
+  - 0.1
+  - 0.5*
+#>  
+
+#< quiz "coding_error" 
+question: |
+  Did we actually compute everything correctly or did we make some error?
+sc:
+  - Everything is correct.
+  - We should predict on the training data set instead of the test data set.
+  - We made a computation error in the formula for the RMSE.*
+  - We made an error in the code to estimate the models.
+#>
+
+#. youtube id="l2Scq75gsUg", file="2a Lasso 6 R.mp4"
+
+#< quiz "lasso_small_n"
+question: |
+  Assume now we estimate our models with a much smaller training data set (only 100 observations). What do you think will now be the best regularization parameter for an optimal out-of-sample prediction?
+sc:
+  - Now the smallest lambda is probably clearly the best regularization parameter.
+  - It should remain the same one as before.
+  - Probably a larger lambda is now better.*
+#>
+
+#. youtube id="iM21X22RM0c", file="2a Lasso 7 R.mp4"
+
+
+Wow, a lot of videos and questions about the lasso. You get the **Cowboy** award! Only one more video to go. Ride on to the next section...
+
+#. section 
+
+### Parameter Tuning & Cross Validation
+
+Below is a brief video giving a brief summary about parameter tuning and cross validation. Here you are asked to read carefully the lecture slides for more details.
+
+#. youtube id="1W3ER3GDZpU", file="2a Parameter Tuning.mp4"
+
+### Parameter Ridge Regression and Elastic Net
+
+Also take a look in the lecture slides about ridge regression, which is a variant of lasso regression.
+
+### RTutor problem set for this chapter
+
+The RTutor problem set differs a bit more from the video lectures and slides than in previous chapters. I wanted to illustrate how to estimate ols and lasso prediction models for a real world data set about used cars. Before one can build a reasonable prediction model with a real world data set, one typically needs to spend considerable time on data preparation and cleaning. So those steps will be a large part of the RTutor problem set.
+
+
+
+

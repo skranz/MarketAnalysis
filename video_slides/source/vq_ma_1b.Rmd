@@ -1,0 +1,218 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_1b.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_1b.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_1b.Rds")
+```
+#>
+
+#. section
+
+Videos and questions for Chapter 1b of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+
+### The simple linear regression model
+
+#. youtube id="T5u8MiCVKug", file="1b simple linear regression.mp4"
+
+#< quiz "simple_vs_multiple"
+question: |
+  Later we will also look at the *multiple* linear regression model. What do you think is the difference to this *simple* linear regression model?
+sc:
+  - The multiple linear regression model has more than one explanatory variable \(x\).*
+  - The multiple linear regression model has more than one dependent variable \(y\).
+  - The error term \(\varepsilon\) in the multiple linear regression model can follow any distribution. In the simple linear regression model, it must be normally distributed.
+success: |
+  Correct. You may wonder why we don't immediately start with a multiple linear regression given that this is a Masters course and most of you probably already covered linear regression in some class. The reason is that unless you are an expert in Matrix algebra, it is easier to understand results and assumptions for the simple linear regression in an intuitive fashion. Later we learn the <emph>regression anatomy</emph> approach that allows to reduce every multiple linear regression to a simple linear regression. This essentially allows us to always work with the more intuitive assumptions and results for a simple linear regression.
+#>
+
+### Predicted values and residuals
+
+#. youtube id="s6llt8aUbvU", file="1b predicted values and residuals.mp4"
+
+
+#< quiz "residuals"
+question: |
+  Assume the red line on the previous slide show the *estimated* regression line. What measures then the vertical black line?
+sc:
+  - The residual \(\hat \varepsilon_i\).*
+  - The disturbance \(\varepsilon_i\).
+  - Both the disturbance \(\varepsilon_i\) and the residual  \(\hat \varepsilon_i\).
+  - None of the above.
+#>
+
+### Ordinary Least Squares Estimation
+
+#. youtube id="FnTUrsa74eY", file="OLS and Matrix.mp4"
+
+
+#< quiz "beta_hat_rv"
+question: |
+  The disturbance $\varepsilon$ is always modelled as a random variable. The explanatory variable $x$ can also be a random variable. Is the OLS estimator $\hat \beta$ also a random variable?
+sc:
+  - yes*
+  - no
+#>
+
+#. section
+
+### The estimator is a random variable
+
+#. youtube id="C3pqRPH_SYA", file="Estimator and Estimate.mp4"
+
+#< quiz "E_beta_hat"
+question: |
+  What do you think holds true for the expected value of the OLS estimator $\hat \beta$ (which is a random variable)?
+sc:
+  - The expected value of \(\hat \beta\) is always equal to the true coefficients \(\beta\).
+  - The expected value of \(\hat \beta\) is equal to the true coefficients \(\beta\) only if \(x\) and \(\varepsilon\) satisfy some assumptions.*
+success: |
+  Correct. The crucial requirement will be that the explanatory variable and disturbance are uncorrelated, as is the case in a well randomized experiment. But we will discuss this later. I just wanted to add a quiz between the videos and could not think of a better question...
+#>
+
+### Monte-Carlo simulation of an OLS estimator
+
+#. youtube id="JXNBU7fK3T4", file="1b Monte-Carlo 1.mp4"
+
+#< quiz "MC-T"
+question: |
+  How do you think the estimates differ when we call our function several times with `T=5` compared to earlier where we had `T=100`.
+sc:
+  - They will be distributed in the same way
+  - They will be systematically smaller.
+  - They will be systematically larger.
+  - They will have a lower standard deviation.
+  - They will have a higher standard deviation.*
+#>
+
+#. youtube id="_Q0MnXRk3mw", file="MC-2.mp4"
+
+#. section
+
+## Standard Error of \(\hat \beta_1\)
+
+#. youtube id="g9HzJw3plvc", file="1b standard error.mp4"
+
+
+#< quiz "se-n"
+question: |
+  Assume you run an experiment with $T=20$ observations and get some standard error for $\hat \beta_1$. If you want to halve the size of that standard error, how many observations would you roughly need?
+sc:
+  - In total \(T=10\) observations.
+  - In total \(T=40\) observations.
+  - In total \(T=80\) observations.*
+success: |
+  Since the number of observations T appears in a square root, we need a sample that is average 4 times as large as the original sample to halve the standard error.
+#>
+
+### Robust Standard Errors
+
+#. youtube id="I3RAQznLvUE", file="robust standard errors.mp4"
+
+
+#. section
+### Criteria for Estimators 1: Bias and Mean Squared Error (MSE)
+
+#. youtube id="91VyVWTx-ps", file="Bias to MSE.mp4"
+
+### Bias and MSE in our Monte-Carlo Simulation
+
+#. youtube id="WBnubFrA8Bk", file="1b R bias and mse.mp4"
+
+### Criteria for Estimators 2: Consistency and Efficiency
+
+#. youtube id="LCuXVH4xkcw", file="Consistency and Efficiency.mp4"
+
+#< quiz
+question: |
+  In our Monte-Carlo simulation did it look as if the estimator $\hat \beta_1$ was consistent?
+sc:
+  - yes*
+  - no
+success: |
+  The estimator looked pretty unbiassed and its variance went down with larger sample size. So it looked as if \(\hat \beta_1\) was consistent. Of course, we cannot really proove that it is consistent with a Monte-Carlo simulation. To be more convinced you can also run the simulation with a larger sample size like `T=10000`.
+#>
+
+#. section
+
+## Assumptions of the linear regression model
+
+#. youtube id="EZRxP5438oE", file="1b A1 start.mp4"
+
+#< quiz A1_random_prices
+question: |
+  Assume we estimate a simple demand function $q = \beta_0 + \beta_1 p + \varepsilon$ with data from a pricing experiment in which we have drawn each day an independent random price $p_t$. Is condition A1 then satisfied?
+sc:
+  - yes*
+  - no
+success: |
+  Since the explanatory variable (here $p$) is indepedently, randomly drawn, the demand shock $\varepsilon$ is stochastically completely independent from the explanatory variable. Condition A1 is always satisfied if the explanatory variable and the error term are stochastically independent from each other.
+#>
+
+## Endogeniety and Exogeniety
+
+#. youtube id="0KP6i-Jf6Sg", file="1b Exogenous or Endogenous x.mp4"
+
+#. section
+
+## Exploring Endogeniety in R
+
+Let us look at some R code to better understand that an endogenous explanatory variable leads to an inconsistent OLS estimator 
+
+#. youtube id="NuVtBG4P9O4", file="1b R endogeniety 1.mp4"
+
+#< quiz "r_p_endo"
+question: |
+  Are the prices in the regression for the simulation in the video above endogenous or exogenous?
+sc:
+  - the prices are endogenous*
+  - the prices are exogenos
+#>
+<br>
+
+#. youtube id="ePt0b3whp9A", file="1b R endogeniety 2.mp4"
+
+
+#< quiz "p_costmarkup"
+question: |
+  Assume we set in the simulation prices that are always 10% above the costs c. Are prices then endogenous or exogenous when estimating the demand function?
+sc:
+  - the prices are endogenous
+  - the prices are exogenos*
+#>
+<br>
+
+#. youtube id="XJHvvuUImB4", file="1b R endogeniety 3.mp4"
+<br>
+What happens if the standard deviation of $\varepsilon$ is very small?
+
+#. youtube id="QQzZY2bv2pk", file="1b R endogeniety 4 (small sd eps question).mp4"
+
+#< quiz "bias_small_eps"
+question: |
+  What do you think holds for our estimator $\hat \beta$ if we have such a small standard deviation of $\varepsilon$?
+sc:
+  - We will no longer find a substantial bias and the standard error of \(\hat \beta_1\) becomes very small.*
+  - We will no longer find a substantial bias but the standard error of \(\hat \beta_1\) remains not very small.
+  - We will still have a substantial bias but the standard error of \(\hat \beta_1\) becomes very small.
+  - We will still have a substantial bias and the standard error of \(\hat \beta_1\) is not very small.
+#>
+
+#. youtube id="B5J9N96ZlDg", file="1b R endogeniety 4 (small sd eps answer).mp4"
+
+
+
+#. section
+
+### Other Assumptions
+
+#. youtube id="6R3dpsIJ_Yw", file="1b A2-A4.mp4"
+
+### Confidence Intervals and Bias Formula
+
+#. youtube id="0UTmsY5h25c", file="1b Confidence Interval and Bias Formula Very Brief.mp4"
+
+Ok, that were all videos for the first part of Chapter 1b. If you have not yet done so, it is a good time to start solving the RTutor problem set for this part.

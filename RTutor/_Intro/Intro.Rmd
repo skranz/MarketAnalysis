@@ -1,0 +1,601 @@
+
+# Problemset r_intro
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE' # set to your user name
+
+# To check your problem set, run the 
+# RStudio Addin 'Check Problemset'
+
+# Alternatively run the following lines
+library(RTutor)
+ps.dir = getwd() # directory of this file
+ps.file = 'Intro.Rmd' # name of this file
+check.problem.set('Intro', ps.dir, ps.file, user.name=user.name, reset=FALSE)
+```
+
+
+An interactive Problemset for RTutor that introduces working with vectors and data frames in R
+
+## Exercise 1 -- R as calculator
+
+a) Compute 123 + 257 by typing it below as R code. To run the code in your R console, go to the line with your text cursor and press Ctrl-Enter.
+
+```{r "1_a"}
+
+# enter your code here ...
+
+```
+
+Now check your solution, by pressing in RStudio  `Addins -> Check Problemset`
+(Hint: Via the menu `Tools->Addins` you can also assign a keyboard shortcut to `Check Problemset`, like e.g Ctrl-R. This makes it faster to check your solutions.)
+
+Also try to type in a wrong solution above to see RTutors output.
+
+b) The command
+```{r "1_b"}
+x = 4
+```
+
+assigns the value 4 to the **variable** x.
+
+Assign the value 8 to the variable y
+
+```{r "1_b_2"}
+
+# enter your code here ...
+
+```
+
+Again check your solution (`Addins -> Check Problemset`). Do this in all the following chunks.
+
+
+c) We can now calculate with these variables. Compute the product of x and y
+
+```{r "1_c"}
+
+# enter your code here ...
+
+```
+
+You can type `stats()` in the R console anytime to see your progress on the problem set.
+
+d) Compute the square root of 123456789, assign it to a variable r and show r.
+
+```{r "1_d",optional=TRUE}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+
+If you correctly finished the exercise above, you earned an award. There is no extrinsic benefit of awards, but experience from video game design suggests that awards might still be motivating. You can see all your awards by typing `awards()` in the R console.
+
+Finally, run the following code:
+```{r "1_d_2"}
+(0.1+0.2-0.3)*10000000000000000000
+```
+The result should be 0, but on most computers you get a wrong result!
+
+Almost all programming languages make small rounding errors when computing with non-integer numbers. If you build rockets, you should really take this into account or desaster can happen.
+
+See here: http://ta.twi.tudelft.nl/users/vuik/wi211/disasters.html
+
+For our purposes, we can usually ignore rounding errors, however.
+
+## Exercise 2 -- Calculating with vectors
+
+a) A nice feature of R is that you can also directly calculate with vectors.
+The following command creates a vector of 3 numbers
+
+```{r "2_a"}
+c(4,2,73)  
+```
+
+
+b) Save in the variable u a vector of 4 different numbers
+
+```{r "2_b"}
+
+# enter your code here ...
+
+```
+
+c) Enter the command 3*u
+
+```{r "2_c"}
+
+# enter your code here ...
+
+```
+
+The command simply multiples each element of u by 3.
+
+Remember: you can type anytime the command `stats()` in your R console to see how much you have already solved, and how many hints you have looked at. Try it out.
+
+d) Add 100 to each element of u
+
+```{r "2_d",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+Remember: Make sure to save (Strg-S) and check  (Strg-Alt-R) your problem set after each code chunk.
+
+e) Generate another vector v of 4 different numbers and compute the sum of u and v
+
+```{r "2_e"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+f) Find out what the command u*v computes. Is it the scalar product of u and v, the outer product or the element-wise product?
+
+```{r "2_f",optional=TRUE}
+# Write down as answer "scalar product", "outer product", or "element-wise product"
+
+# enter your code here ...
+
+```
+
+
+## Exercise 3 -- Combining vectors
+
+a) Consider the following commands that generate vectors
+
+```{r "3_a"}
+x = 2:4
+x
+c(x, 10:13)
+seq(5,7,by=0.5)
+```
+
+By looking at the resulting vectors can you guess what the commands a:b, c and seq do? You can also use the R-help by pressing F1 when your text-input cursor is on the command name. 
+
+b) Use `:` create a vector that contains all integer numbers between 10 und 20, i.e. 10, 11, 12, ..., 19, 20. (Remember: If you get stuck, call `hint()` in the R console.)
+
+```{r "3_b",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+c) Let y be a vector that contains all numbers between 0 and 1 with step size 0.01, i.e. 0, 0.01, 0.02, ..., 0.99, 1. Then show y.
+
+```{r "3_c"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+d) Let 'b' be a variable that contains all integer numbers from 0 to 10 and from 50 to 60 but not the numbers inbetween. Show b.
+
+```{r "3_d",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+e) Let z be a variable that shows the first 100 square numbers, i.e. 1,4,9,... Then show z.
+
+```{r "3_e",optional=TRUE}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+## Exercise 4 -- Summary functions
+
+a) We often want to compute some summary statistics of a vector. For example:
+
+```{r "4_a"}
+x = 10:20
+x
+# Compute the sum of x
+sum(x)
+```
+
+b) Compute the mean of x.
+
+```{r "4_b"}
+
+# enter your code here ...
+
+```
+
+c) Compute the standard deviation of x.
+
+```{r "4_c"}
+
+# enter your code here ...
+
+```
+
+d) Find the maximum value of all elements in x.
+
+```{r "4_d"}
+
+# enter your code here ...
+
+```
+
+e) Find the minimum value of all elements in x.
+
+```{r "4_e"}
+
+# enter your code here ...
+
+```
+
+f) Use the approbriate R function to find the index of the element with the maximum value of all elements in x.
+
+```{r "4_f"}
+
+# enter your code here ...
+
+```
+
+
+
+
+## Exercise 5 -- Indexing
+
+a) The following commands generate and show a vector x with some numbers
+
+```{r "5_a"}
+x = ((1:19)-10)^2
+x
+```
+
+We can simply show a plot of x by typing
+
+```{r "5_a_2"}
+plot(x)
+```
+
+b) If we want to access the 3rd element of x, we  type
+
+```{r "5_b"}
+x[3]
+```
+
+We can get a subvector of the elements 5,6,7 by typing
+
+```{r "5_b_2"}
+x[5:7]
+```
+
+c) Show the 9nth element of x
+
+```{r "5_c"}
+
+# enter your code here ...
+
+```
+
+d) Save in the variable z the elements 15,16,17,18 of x and show z
+
+```{r "5_d"}
+
+# enter your code here ...
+
+```
+
+e) Store in y the elements 4,2,9 (in this order) of x and show y
+
+```{r "5_e"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+## Exercise 6 -- Logical operations
+
+a) R has logical values TRUE or FALSE
+
+```{r "6_a"}
+# Comparisons yield TRUE or FALSE
+5 > 3
+1 == 2 # == checks equality
+
+x = 10 # = assigns a value
+x < 3
+```
+
+The operator & is a logical AND. It returns TRUE if BOTH conditions are TRUE
+
+```{r "6_a_2"}
+5 > 3 & x==2 
+1+2 == 3 & 100 / 10 == x
+```
+
+The operator | is a logical OR. It returns TRUE if at least ONE of the two conditions is TRUE
+
+```{r "6_a_3"}
+5 > 3 | x==2 
+1+2 == 3 | 100 / 10 == x
+1+1 == 3 | 2+2 == 5
+```
+
+We can apply comparisons and logical operators also on vectors of the same length, which are then performed elementwise. We get a logical vector that contains TRUE and FALSE for each element of the vector
+
+```{r "6_a_4"}
+y= 10:20
+y > 15
+y %% 2 == 0 # is TRUE for those elements of y that are an even number
+```
+
+
+b) Return a logical vector that returns a TRUE for all elements of y that are <= 14.
+
+```{r "6_b"}
+
+# enter your code here ...
+
+```
+
+c) Return a logical vector that returns a TRUE for all elements of y that are smaller equal 14 or bigger equal 18
+
+```{r "6_c"}
+
+# enter your code here ...
+
+```
+
+d) Return a logical vector that returns a TRUE for all elements of y that are between 15 and 19 (including 15 and 19)
+
+```{r "6_d"}
+
+# enter your code here ...
+
+```
+
+e) We can use logical vectors to index vectors. For example, to get all values of y that are strictly above 15, we can type
+
+```{r "6_e"}
+y[y>15]
+```
+
+f) Show all values of y that are strictly below 13
+
+```{r "6_f"}
+
+# enter your code here ...
+
+```
+
+g) Show all values of y that are between or equal to 14 and 18,
+
+```{r "6_g"}
+
+# enter your code here ...
+
+```
+
+h) Note that we can also store a logical vector in a variable
+
+```{r "6_h"}
+ind = (y >=18)
+ind
+y[ind]
+```
+
+the function which gets the index of all elements in which a logical vector is TRUE
+
+```{r "6_h_2"}
+which(ind)
+```
+
+
+## Exercise 7 -- Data frames and dplyr
+
+a) In data analysis one very often works with `data frames`, which are essentially tables. The ZIP file of your problem set contains the file "eu_2017.Rds". Make sure the file is in the same directory as this Rmd file and then run the following code to load it:
+
+```{r "7_a"}
+dat = readRDS("eu_2017.Rds")
+```
+
+Now call the function `head` on `dat` to see the first 6 lines.
+
+```{r "7_a_2"}
+
+# enter your code here ...
+
+```
+
+The file contains macroeconomic data from 2017 for EU countries. You can also find `dat` in the Global Environment pane in RStudio. If you click on it, a table opens that shows the full data.
+
+b) One way to choose rows of a data frame is by their index in a very similar fashion to selecting elements of a vector. Solve the following chunk:
+
+```{r "7_b",optional=TRUE}
+# Choose rows 2, 3, 4 from dat
+dat[2:4,]
+
+# Now choose the rows 5, 7, 10 from dat
+
+# enter your code here ...
+
+```
+
+c) Columns of a data frame can be selected in many different ways. Just run the code below.
+
+```{r "7_c"}
+# Similar to vector index
+# the column index is after the ,
+dat[,1]
+
+# You can also use column names
+dat[,"cntry"]
+
+# You can also select more than one column and
+# you can also select specific rows and columns
+# at the same time:
+dat[c(8,10,12), c("cntry","pop")]
+
+# A more convenient method to
+# select a single column by name
+dat$cntry
+```
+
+If you look carefully how the results are printed, you see that if you select just one column, the result is a vector. If you select more than one column the result is again a data frame. 
+
+d) The popular R package `dplyr` has several function like `select`, `filter`, `mutate`, `arrange` and `summarize` to conveniently modify data frames. These functions are often called "dplyr verbs". With `select` one can select one or several columns. Run the code below:
+```{r "7_d"}
+# We first load the package dplyr
+library(dplyr)
+
+# Select two columns
+select(dat, cntry, pop)
+
+# Select one column
+select(dat, cntry)
+```
+
+Look at the output from `select` if we select a single column. Is that just a "vector" or a "data frame" with a single column? Type the right answer here:
+
+```{r "7_d_2",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+All dplyr verbs return a data frame (or sometimes a `tibble` which is mostly the same) and take as first argument a data frame. This useful convention allows to nicely chain several `dplyr` commands together, as we will see below.
+
+e) We can also filter rows of a data frame by logical conditions. For example, the following code filters those countries who have higher imports than exports:
+
+```{r "7_e"}
+dat[dat$imports > dat$export,]
+```
+
+We can filter the same rows with the `dplyr` function `filter` by writing:
+
+```{r "7_e_2"}
+filter(dat, imports > exports)
+```
+
+Note that inside dplyr verbs you just can write like a column name like `import` instead of `dat$import`. That makes the code much easier to read if you have complex formulas.
+
+Now use the function `filter` to filter all rows from `dat` where the country has a population of more than 40 million.
+```{r "7_e_3",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+f) We can easily add or modify columns of a data frame. Run the following code to add the column `gdp_per_capita` (in 1000 Euro):
+
+```{r "7_f"}
+dat$gdp_per_capita = dat$gdp / dat$pop
+```
+
+Using `dplyr` we can add or modify columns with  `mutate`. Replace the ___ in the code below to compute besides GDP per capita also the goverment debt per capita (in 1000 Euro).
+
+```{r "7_f_2"}
+dat = mutate(dat,
+  gdp_per_capita = gdp / pop,
+  debt_per_capita = ___ / ___
+)
+
+# enter your code here ...
+
+```
+
+g) With the `dplyr` verb `arrange` you can sort your data. The following command sorts shows your data ascending in population:
+
+```{r "7_g"}
+arrange(dat, pop)
+```
+
+Now use `arrange` to show our data *descendingly* sorted in `gdp_per_capita`.
+```{r "7_g_2",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+h) One often uses several `dplyr` verbs after each other. Run the example below, which we will later write in a nicer fashion:
+
+```{r "7_h"}
+netdat = dat
+netdat = mutate(netdat, net_exp_pc = (exports - imports)/pop) # 1
+netdat = filter(netdat,net_exp_pc>0)                          # 2
+netdat = arrange(netdat,desc(net_exp_pc))                     # 3
+netdat = select(netdat, country, pop, net_exp_pc)             # 4
+head(netdat) # 5
+```
+
+First, we save `dat` in a new data frame `netdat`. We then change `netdat` in 4 steps. Step 1 creates with `mutate` a new column `net_exp_pc` (net exports per capita). Step 2 filters those countries with positive net exports. Step 3 sorts the countries descendingly in net exports per capita. Step 4 only extracts selected columns.
+
+To make such chains of `dplyr` commands easier readable, we can use the "pipe-operator" `%>%`. Here is the rewritten version of the example above:
+
+```{r "7_h_2",round.digits=3}
+netdat = dat %>% 
+  mutate(net_exp_pc = (exports - imports)/pop) %>% # 1
+  filter(net_exp_pc>0) %>%                         # 2
+  arrange(desc(net_exp_pc)) %>%                    # 3
+  select(country, pop, net_exp_pc)                 # 4
+head(netdat)
+```
+
+Wie combine the different command with a `%>%` at the end of every line. In the `dplyr` commands we omit the first argument (the data frame we apply the command on). What the pipe operator `%>%` does is that it simply uses the result of the previous line as the first argument in the function call of the next line.
+
+To practice, implement now you own dplyr chain.
+
+1. First generate with mutate a new column `debt_share`, which shall be the government debt as share of gdp.
+
+2. Then add to your chain an `arrange` to sort your data ascendingly in `debt_share`. 
+
+```{r "7_h_3",optional=TRUE}
+dat %>% 
+  mutate(debt_share = ___)
+
+# enter your code here ...
+
+```
+
+Now copy the chain from above but add two more commands:
+
+3\. Filter only those countries that satisfied 2017 the Maastricht Criterium that Government debt ist not more than 60% of the gdp.
+
+4\. Select only the columns `country` und `debt_share`.
+
+```{r "7_h_4",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+
+
+
+
+
+## Submitting your solution
+
+To submit your problem set first check it via Addins -> "Check Problemset" and then run the following command in the R console:
+
+    make.submission()
+
+It checks again your whole problem set and generates a file of the form `problemsetname__username.sub` that contains your solution and log files.
+Now submit this file for the corresponding assignment on Moodle. 
+Please do not change the name of the file.
+
+** Make sure that you upload the `.sub` file to Moodle, not some file with another extension!**

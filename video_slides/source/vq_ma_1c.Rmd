@@ -1,0 +1,280 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_1c.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_1c.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_1c.Rds")
+```
+#>
+
+
+
+#. section
+
+Videos and questions for Chapter 1c of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+
+### Multiple Linear Regression with Control Variables
+
+#. youtube id="p9ZNhLbwn3Y", file="1c slide 2 and 4.mp4"
+
+#< quiz endo_p1
+question: |
+  Consider the model from the video above and assume prices $p_t$ are uncorrelated with $u_t$ but positively correlated with $s_t$. Do we get a consistent estimator $\hat \beta_1$ if we estimate the short regression $q_t = \beta_0 + \beta_1 p + \varepsilon$ via OLS?
+sc:
+  - yes
+  - no*
+success: |
+  If we ommit $s$ from the estimated regression, it becomes part of the error term $\varepsilon$. Since $p$ is correlated with $s$, it is then correlated with $\varepsilon$. We have an endogeneity problem and an inconsistent estimator.
+#>
+
+#< quiz endo_p2
+question: |
+  Assume we estimate the multiple regression $$q_t = \beta_0 + \beta_1 p_t + \beta_2 s_t + u_t$$ where $p_t$ is uncorrelated with the error term $u_t$ but correlated with the other explanatory variable $s_t$. Is $p$ then exogenous or endogenous?
+sc:
+  - exogenous*
+  - endogenous
+success: |
+  Also in a multiple linear regression only the correlation between a variable and the error term is relevant for being exogenous or endogenous. When $p$ is uncorrelated with the error term, it is exogenous even if it is correlated with some other explanatory variable.<br>For all examples in this course it wil hold true that if a variable in a multiple regression is exogenous, then the OLS estimator of its coefficient is consistent. (The general consistency requirements are a bit stronger and can be derived from the regression anatomy further below.)
+#>
+
+#. youtube id="G6pSNxkLsF4", file="1c Slide 4 R.mp4"
+
+  
+#< quiz endo_p3
+question: |
+  Now assume we change the model in the video such that $p$ is uncorrelated with both $u$ and $s$. Assume we estimate again the short regression $q_t = \beta_0 + \beta_1 p + \varepsilon$. Is the estimator $\hat \beta_1$ now consistent?
+sc:
+  - yes*
+  - no
+success: |
+  Now $p$ is exogenous and we have a consistent OLS estimator.
+#>
+
+#. youtube id="rpVQ26HLQpg", file="1c Slide 4 R independent p.mp4"
+
+
+#< quiz rand_exp_control
+question: |
+  Assume you have a perfectly randomized pricing experiment. Do you need to add control variables to your regression to consistently estimate the causal effect of price on expected demand?
+sc:
+  - yes
+  - no*
+success: |
+  If your pricing experiment is perfectly randomized, you don't *need* to add control variables since prices are then uncorrelated from all remaining factors that can influence demand. 
+#>
+
+Nevertheless control variables are often added in randomized experiments. First, because perfect randomization is often not possible and second because control variables can allow you to reduce the standard errors of your estimator.
+
+If you add control variables in the regression, you can also run non-perfectly randomized price experiments. For example, if you already know that it is more profitable to set higher price on sunny days, you may want to run an experiment where you set higher prices on sunny days than on non-sunny days but still add some random price fluctuation each day. If you then control in the regression for sunny and non-sunny days, you still can consistently estimate the causal effect of prices.
+
+#. section
+
+### Matrix formula for multiple linear regression
+
+Take a look on the lecture slides for chapter 1c to see that the OLS estimator $\hat \beta$ can be computed with the same matrix formula that we have introduced for the simple linear regression. One only needs to add one column to the matrix $X$ for each explanatory variable.
+
+For more advanced intuition for the multiple regression, the following *regression anatomy* result is useful.
+
+### Regression Anatomy
+
+#. youtube id="ecAMnP8zjKQ", file="1c Regression Anatomy General.mp4"
+
+### Illustration of Regression Anatomy in R
+
+#. youtube id="ic5fIuj42bw", file="1c Regression Anatomy in R.mp4"
+
+On the slides you find more details and interpretation of the regression anatomy. If you are new to econometrics this may sound all a bit abstract. But if you already have a some experience, the regression anatomy can be really helpful for a better intuitive understanding of what it means to add a control variable.
+
+But let's move on...
+
+#. section
+
+## Which control variables to include...
+
+And finally an example that is not about estimating ice cream demand!
+
+#. youtube id="MFZaKDl1y2I", file="gender_wage.mp4"
+
+Here are some quiz questions about which control variables you would include in a regression.
+
+#< quiz cont_quant
+question: |
+  Assume you want to study if and how much wage *discrimination* based on gender exists. Would you add channel variables like having studied a quantitative subject to your regression?
+sc:
+  - yes*
+  - no
+success: |
+  Correct. Discrimination is one particular channel for wage differences. To only estimate the effect of that chanell, we need to control for all other non-discrimination based channels that can lead to wage differences.
+#>
+
+#< quiz cont_management
+question: |
+  Assume you want to analyse the effect of obtaining a university degree on wages. Would you add as control variable whether people later have a management position in their firm?
+sc:
+  - yes
+  - no*
+success: |
+  Correct. Whether you have a management position depends on many factors including your education and whether you have a university degree. It is therefore one channel by which a university degree affects your wages. Since the question does not refer to only a particular channel by which a university degree affects your wages, we want to estimate the combined effects of all possible channels. Hence, we should not include any channel variable in the regression. 
+#>
+
+#< quiz cont_grades
+question: |
+  Assume you want to analyse the effect of obtaining a university degree on wages. Would you add high-school grades as control variable?
+sc:
+  - yes*
+  - no
+success: |
+  Correct. Since high school takes place before going to university, the high school grades cannot be a channel of the university degree on wages. However, high school grades can be positively correlated with the probability to go to university and with wages. Hence, f we don't include them in the regression, they would be part of the error term and the explanatory variable "has university degree" would be endogenous and our OLS estimator inconsistent.
+#>
+
+Video remark on the difficulty to estimate causal effect of a university degree on wages:
+
+#. youtube id="oHQGiZYVSMc", file="1c Side Remark.mp4"
+
+#< quiz cont_retail_price
+question: |
+  Assume a producer sells his product at a producer price $p^p$ to stores and the stores set a retail price $p^r$ for final customers. You are the producer and want to estimate how the demand for your product depends on your producer price $p^p$. Should you add the retail price $p^r$ as a control variable to your regression?
+sc: 
+  - yes
+  - no*
+success:
+  Correct. The retail price is a classic channel variable. The final demand mainly depends on the retail price and the retail price itself will depend on the producer price that the store has to pay. If we would add the retail price to the regression, we would only measure an effect that the producer price would have on demand beyond the main channel of changing the retail price. But for estimating the effect of producer price on demand, we are interested in the total effect through all channels. We therefore don't want to include the channel variable retail price.
+#>
+
+And a last quiz on this page...
+
+#< quiz cont_cost
+question: |
+  Assume you know that prices $p$ depend on variables describing the demand conditions and on costs $c$. You also know that costs are uncorrelated with demand conditions. You want to estimate a demand function. Would you add costs $c$ as control variable to your regression?
+sc:
+  - yes
+  - no*
+success: |
+  Correct. We clearly want to control for the variables that describe demand conditions. But why is the correct answer not include costs as a control variable? Are costs a channel variable? No. But variation in costs create valuable variation in prices that is uncorrelated to demand conditions (at least that is assumed in the question). If we would include costs as control variable, we would take away this variation (recall the regression anatomy) and it is not clear which price variation would actually be used to identify the causal effect of prices on demand.
+#>
+
+
+#. section
+
+### Controlling by running separate regressions for subsets of data
+
+#. youtube id="bNRhQvkOTVM", file="1c Controlling by Running Regressions on Subsets of Data.mp4"
+
+#. section
+
+### Heterogeneous Effects and Interaction Terms
+
+#. youtube id="Ua0WI0_-hHM", file="1c Heterogeneous Effects Intro.mp4"
+
+### R Example about Estimating Heterogeneous Effects
+
+#. youtube id="PMx3X6tNNGE", file="1c Heterogeniety in R 1.mp4"
+
+Consider the regression with interaction effects:
+
+$$q = \beta_0 + \beta_1 p + \beta_2 s + \beta_3 p \cdot s + \varepsilon$$
+
+#< quiz interaction_1
+question: |
+  To what will the estimated coefficient $\hat \beta_1$ in the regression with interaction terms be equal to?
+sc:
+  - It will be equal to \(\hat \beta_1\) (ca. -1) from the regression reg0 where we only used days with \(s_t = 0\).*
+  - It will be equal to \(\hat \beta_1\) (ca. -3) from the regression reg1 where we only used days with \(s_t = 1\).
+success: |
+  Correct. Look at the next video for an explanation.
+#>
+
+#. youtube id="E3i8LUztoBA", file="1c Heterogeniety R 2.mp4"
+
+### Non-linear Effects
+
+#. youtube id="DFfiHBicg0c", file="1c Nonlinear Effects.mp4"
+
+#< quiz quad_still_linear
+question: |
+  Asssume we estimate a regression in which an explanatory variable $x$ has a quadratic effect: $$y = \beta_0 + \beta_1 * x + \beta_1 x^2 + \varepsilon$$ Is this still called a **linear** regression?
+sc:
+  - yes*
+  - no
+success: |
+  Correct. Even if explanatory variables appear with non-linear terms or we have interaction effects, it is still called a *linear* regression. Important is that $y$ is a linear function of the coefficients $\beta$. An example for a non-linear regression would be $$y = exp(\beta_0 x_1) + \beta_2 x2 + \varepsilon$$ where $y$ is not a linear function of $\beta$. Non-linear regressions are much less used than linear regressions, and we won't look at them in this course.
+#>
+
+#. section
+
+### Instrumental Variable Estimation
+
+#. youtube id="cJ8_qmgOLLY", file="1c IV Motivating Example.mp4"
+
+### R Example Instrumental Variable Estimation via Two Stages Least Squares
+
+#. youtube id="vdKPT8vG4yk", file="1c R 2SLS.mp4"
+
+### Conditions for a valid instrumental variable
+
+An instrumental variable (in the example above costs), must satisfy two conditions. An exogeneity condition and a relevance condition.
+
+#< quiz IV_exo
+question: |
+  What do you think is the **exogeneity condition** that an instrumental variable must satisfy?
+sc:
+  - The instrument must be uncorrelated with the error term of the original regression.*
+  - The instrument must be uncorrelated with the endogenous explanatory variable of the original regression.
+#>
+
+#< quiz IV_rel
+question: |
+  What do you think is the **relevance condition** that an instrumental variable must satisfy?
+sc:
+  - The instrument must be correlated with the error term of the original regression.
+  - The instrument must be correlated with the endogenous explanatory variable of the original regression.*
+  - The instrument must be uncorrelated with the endogenous explanatory variable of the original regression.
+#>
+
+#. youtube id="yJnxJEvJfPI", file="1c IV conditions.mp4"
+
+#< quiz IV_conditions_check
+question: |
+  Which condition of an instrument $z$ for an endogenous variable $x$ could you check statistically with a real world data set?
+sc:
+  - The relevance condition \(cor(z,x) \ne 0\).*
+  - The exogeneity condition \(cor(z,\varepsilon) = 0\).
+#>
+
+
+#. youtube id="plV4vX2pmGY", file="1c R IV is s an instrument.mp4"
+
+#< quiz is_s_instrument
+question: |
+  Is the exogenous explanatory variabe $s$ in the demand function
+  $$q = \beta_0 + \beta_1 p + \beta_2 s + \varepsilon$$
+  a valid instrument for the endogenous price in this demand function?
+sc:
+  - Yes*
+  - No
+#>
+
+#. youtube id="-DFiBnrUco8", file="1c IV answer s and exclusion restriction.mp4"
+
+### Directly estimating IV Regression with ivreg
+
+#. youtube id="XXvuk7zcv5U", file="1c IV reg 1.mp4"
+#< ignore
+#< quiz iv_univ_wage
+question: |
+  Assume you want to estimate the causal effect of the explanatory variable `x` that indicates whether a person has obtained a university degree on a persons average yearly salary. Which of the following variables could be sensible candiate as the excluded instrument for `x` (assuming such data would exists and you can get it)?
+sc:
+  - High school grades of each person.
+  - The average wages from the region a person comes from.
+  - The number of total available slots at universities for new students (assuming all subjects have binding capacity limits) in the year a student finishes high-school.*
+  - The subject a student has chosen.
+success: |
+  Correct. High school grades and average wages in the region will affact wages and should be added as control variables, but they would violate the exogeneity condition when used as excluded instrument. Dummies for the subject a student has studied could be used as interaction terms with `x` to explore heterogenous treatment effects, but they make no sense as excluded instrument. If there is a capacity limit on slots for new students and that capacity limit varies between years, the number of slots per high-school graduate in a year could be used as an instrument. If there are more slots in a year a person graduates it is more likely that this person studies and obtains a university degree. But also such an instrument would not be ideal. There could be reasons why the number of slots  
+  It would be important that the number of slots does not vary due to reasons that also impact wages. 
+  
+#>
+
+#>

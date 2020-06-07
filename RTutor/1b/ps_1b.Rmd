@@ -1,0 +1,538 @@
+
+```{r 'check_ps', include=FALSE}
+
+user.name = 'ENTER A USER NAME HERE' # set to your user name
+
+# To check your problem set, run the 
+# RStudio Addin 'Check Problemset'
+
+# Alternatively run the following lines
+library(RTutor)
+ps.dir = getwd() # directory of this file
+ps.file = 'ps_1b.Rmd' # name of this file
+check.problem.set('ps_1b', ps.dir, ps.file, user.name=user.name, reset=FALSE)
+```
+
+Problem Set 1b
+
+## Exercise 1
+
+a) First we want to simulate ice cream demand for some randomly drawn prices. Fill in the placeholders ___ in the code below according to the comments.
+
+```{r "1_a"}
+T = 20
+beta0 = 100
+beta1 = -1;
+# Draw vector of random prices uniformely distributed between 30 and 50
+p = ___ 
+
+# Draw vector of demand shocks eps normally distributed with mean 0 and
+# standard deviation 2
+eps = ___
+
+# Compute the resulting demand q
+q = ___
+
+# enter your code here ...
+
+```
+
+
+b) Now use the function `lm` to estimate the demand function via OLS.
+
+```{r "1_b"}
+
+# enter your code here ...
+
+```
+
+c) Call the same `lm` command but store the result in a variable called `reg`. Now call the function `summary` on `reg` to see more detailed information about our estimated linear regression:
+```{r "1_c"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+The most interesting part is the table under `Coefficients:`.
+  
+  - The column `Estimate` shows the estimated coeffients `beta0.hat` and `beta1.hat`.
+  
+  - The column `Std. Error` are the estimated standard deviations of those estimators. We will explore these standard deviations in more detail with a Monte-Carlo study below. 
+  
+  - The last two columns `t-value` and `p-value` will be explained later in the course (perhaps you know them already from previous courses).
+  
+d) While `summary` prints the results it does not allow us to use these values easily in future computations. If you only want to get the estimated coefficients as a numeric vector, you can call the function `coef` on `reg`. Do this in the next chunk.
+
+```{r "1_d"}
+
+# enter your code here ...
+
+```
+
+Now follow the comments in the next code chunk to get all relevant columns of the shown coefficient table as a data frame.
+```{r "1_d_2"}
+# Load the package broom
+
+# Call the function tidy on reg and store the result in the
+# variable sum
+
+# Show sum 
+
+# enter your code here ...
+
+```
+
+e) We now want to compute the 95% confidence intervals for our estimated coefficients using the rule of thumb from the lecture slides (estimate plus-minus two standard errors). Replace the ___ in the code below that uses the `dplyr` function `mutate`:
+
+```{r "1_e",optional=TRUE}
+sum %>%
+  mutate(
+    conf.lower = estimate - 2 * std.error,
+    conf.upper = ___
+  )
+
+# enter your code here ...
+
+```
+
+In most cases (i.e. in 95% of cases) the true parameters `beta0=100` and `beta1=1` should lie in the corresponding confidence intervals. If you repeat the simulation above often enough, you find that roughly 5%  of times the true coeficients are outside the confidence interval.
+
+To compute the exact 95% confidence intervals (not our rule of thumb) call now the function `confint` on `reg`:
+```{r "1_e_2"}
+
+# enter your code here ...
+
+```
+
+
+f) Now we want to write an R function called `sim.and.est`. Add the code as explained in the comments.
+
+```{r "1_f"}
+# A function that simulates demand data and estimates the demand function
+sim.and.est = function(T=10) { 
+  # Insert here your code from a)
+  # to simulate our demand data
+  # 
+  # But don't add the line 
+  # T=20
+  # since we have the parameter T as function argument
+
+    
+  # To make the function better readable
+  # Select your entered code above
+  # and then press "Tab" in order
+  # to indent your code it should
+  # start at the same level as these
+  # comments.
+  
+  # Keep the code below
+  
+  # Estimate demand function  
+  reg = lm(q~p)
+
+  # Compute confidence interval
+  conf = confint(reg,"p")
+  
+  # Return beta1, beta1.hat and the 
+  # lower and upper bounds of the 95%
+  # confidence interval 
+  c(
+    beta1=beta1,
+    beta1.hat=coef(reg)[[2]],
+    conf.lower = conf[1],
+    conf.upper=conf[2]
+  )
+  
+}
+
+# enter your code here ...
+
+```
+
+g) Call `sim.and.est` twice with the argument T=10.
+
+```{r "1_g"}
+
+# enter your code here ...
+
+```
+
+You don't get the same estimates `beta1.hat` in your two calls. Neither are the estimates exactly equal to the true coefficient `beta1=-1`, but they are also not too far away. You also see that the confidence intervals are random variables that change between samples.
+
+Now call `sim.and.est` twice with the Argument `T=1000`. 
+
+```{r "1_g_2"}
+
+# enter your code here ...
+
+```
+
+With this larger sample size, your estimates are now most likely relatively close to the true parameters. Does this suggest that our estimator is "consistent" or "inconsistent"?
+
+```{r "1_g_3"}
+# Write down "consistent" or "inconsistent" (including the quotes "")
+
+# enter your code here ...
+
+```
+
+Corresponding to the smaller variation of `beta1.hat` also the confidence intervals for each estimate are smaller with a larger sample size T.
+
+
+h) The following code runs a Monte-Carlo simulation study, which helps to systematically analyse our estimator. The call to `simulation.study` below does the following:
+ - it runs the function `sim.and.est` for each value of `T=10` and `T=100` exactly `repl=3` times
+ - it combines the data frames from each run of `sim.and.est`, adds the corresponding value of `T` and returns the resulting data frame.
+ 
+```{r "1_h"}
+library(sktools)
+simulation.study(sim.and.est, par=list(T=c(10,100)),repl=3)
+```
+
+You can change the argument `repl` above to run larger simulation studies. In the next exercise, we will analyse the results from a large simulation run.
+
+
+Remark: Our function `sim.and.est` runs relatively slowly. If you run a large Monte-Carlo study there are different ways to speed up your code, e.g. by using the function `lm.fit` (or `speedlm.fit` from the package `speedglm`) instead of `lm` when estimating the regression.
+
+## Exercise 2 -- Analyzing the Data from the Monte-Carlo Simulation
+
+a) In your ZIP file with this problem set was also a file `ols_sim.Rds`. This is a data set in internal R format that contains result of a simulation study as in Exercise 1) for `repl=1000` replications.
+
+Load that data set into the variable `dat` using the function `readRDS`. Make sure that the file `ols_sim.Rds` is in the same directory as your problem set
+.
+```{r "2_a"}
+
+# enter your code here ...
+
+```
+
+Now use the function `head` to show the first rows of `dat`:
+```{r "2_a_2"}
+
+# enter your code here ...
+
+```
+
+b) Replace the ___ in the filter command below to store in the data.frame `d10` all rows of dat in which we have a sample size `T` equal to 10.
+
+```{r "2_b"}
+library(dplyr)
+d10 = filter(dat, T == ___)
+
+# enter your code here ...
+
+```
+
+c) Using the command `hist`, draw a histogram of your simulated estimates `beta1.hat` stored in d10. Try changing the parameters breaks, col, xlab and main to make the histogram look nicer.   
+
+```{r "2_c"}
+
+# enter your code here ...
+
+```
+
+This histogram shows the simulated distribution of our estimator `beta1.hat`. You see that it is roughly symmetrically distributed around the true coefficient `beta1=-1`.
+
+d) Using the corresponding R functions, compute the standard deviation and mean of the simulated `beta1.hat` in `d10`.
+
+```{r "2_d",optional=TRUE}
+
+# enter your code here ...
+
+```
+
+Note that the mean of the simulated `beta1.hat` is very close to the true coefficient `beta1=-1`. This suggests our estimator is unbiased.
+
+e) Now also compute the simulated Bias and Mean Squared Error (MSE) of `beta1.hat` using the data in `d10` store them in the variables `bias` and `mse` and show them.
+
+```{r "2_e",optional=TRUE}
+# Recall that the true parameter was
+beta1 = -1
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+f) Let us now compute how often the true parameter `beta1` is inside the 95% confidence intervals of our estimates.
+
+```{r "2_f",optional=TRUE}
+# We compute the times beta1 is in the
+# 95% confidence interval by summing
+# over the corresponding logic
+# vector that is true whenever beta1 
+# is in the confidence interval
+# 
+# Replace the ___ to complete the code
+times.in.conf = sum(
+    d10$beta1 > d10$conf.lower &
+    ___         
+  )
+# Show times.in.conf
+
+# enter your code here ...
+
+```
+
+Given that we simulated 1000 samples with `T=10`, we find for indeed roughly 95% (more precisely 95.8%) of the simulated samples a confidence interval that includes the true parameter `beta1`.
+
+
+
+
+
+g) We now want to graphically compare the distribution of `beta1.hat` for the simulation with small sample size `T=10` and large sample size `T=100`. This can be nicely done using the R package `ggplot2`. Just run the code below.
+
+```{r "2_g"}
+library(ggplot2)
+ggplot(dat, aes(x=beta1.hat, fill=as.factor(T))) +
+  geom_histogram(alpha=0.5,position = "identity")
+```
+
+You see how for `T=100` the estimator `beta1.hat` is distributed much closer around the true parameter `beta1=-1`.
+
+We can also use `geom_density` to see a nicer approximation of the distributions of `beta1.hat` than with a histogram:
+
+```{r "2_g_2"}
+ggplot(dat, aes(x=beta1.hat, fill=as.factor(T))) +
+  geom_density(alpha=0.5)
+```
+
+h) We now want to use some `dplyr` code to conveniently compare the estimator for `T=10` and `T=100`. Just run the following code to compute the MSE of `beta1.hat` for both `T`. 
+```{r "2_h"}
+beta1 = -1
+library(dplyr)
+dat %>%
+  group_by(T) %>%
+  summarize(
+    mse = mean((beta1.hat-beta1)^2)
+  )
+```
+
+The combination of `group_by` and `summarize` computes the summary statistics defined in the summarize code for each subsample defined by the rows that have the same value of the grouping variable `T`. Note that in the summarize code, you just write `beta1.hat`, not `d10$beta1.hat`. You see how the MSE is going down in the sample size `T`.
+
+Now adapt the following code to also compute the standard deviation `sd` of `beta1.hat`
+
+```{r "2_h_2",optional=TRUE}
+beta1 = -1
+dat %>%
+  group_by(T) %>%
+  summarize(
+    mse = mean((beta1.hat-beta1)^2),
+    sd = ___
+  )
+
+# enter your code here ...
+
+```
+
+
+You will learn the combination of `group_by` with `summarize` in more detail in later problem sets.
+
+
+## Exercise 3 -- Exploring Endogeniety
+
+Now we want to study endogenous prices in more detail.
+
+a) Below you find again the simulation of the ice cream demand. Add the computation of profit maximizing prices `p`.
+
+```{r "3_a"}
+T=1000
+beta0 = 100
+beta1 = -1
+
+# demand shocks
+eps = rnorm(T,0,6)
+
+# cost
+c = runif(T, 20,30)
+
+# Compute the profit maximizing prices p 
+
+p = ___
+
+# enter your code here ...
+
+# The demand q using our simple linear demand function 
+q = beta0 + beta1*p +eps
+```
+
+b) Now estimate the demand function via OLS using the R function `lm`. Save the result in `reg` and show a `summary` of `reg`.
+
+```{r "3_b"}
+
+# enter your code here ...
+
+```
+
+Calculate in your head roughly the 95% confidence interval for `beta1.hat` (i.e. the estimated coefficient for `p`). Does the true coefficient `beta1 = -1` lie in this 95% confidence interval?
+
+```{r "3_b_2"}
+# Type "yes" or "no"
+
+# enter your code here ...
+
+```
+
+Your estimate `beta1.hat` is likely more than 20 standard errors away from the true coefficient `beta1`. That is super far away. Recall that the rule of thumb for the 95% confidence interval is plus-minus 2 standard errors around the true coefficient.
+
+It is the usual case in a linear regression with an endogenous variable that the estimate is much farer away from the true coefficient than the standard error or confidence interval suggest. Indeed standard errors and confidence intervals make only sense if we have a consistent estimator, i.e. if we have solved all endogeniety problems.
+
+d) Consider the formula to estimate the bias from the lecture slides
+
+    cor(x,eps)*sd(eps)/sd(x)
+    
+Compute that expression (adapted to our regression) and save the result in the variable `bias.hat` and show it.
+
+```{r "3_d"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+Save now in the variable `beta1.hat` the estimate for `beta1` from your regression. Then show difference `beta1.hat` minus the `bias.hat` computed above.
+
+```{r "3_d_2"}
+
+# enter your code here ...
+
+
+# enter your code here ...
+
+```
+
+If we substract the estimate of the bias (`bias.hat`) as computed above from `beta1.hat` we get exactly the true coefficient `beta1`!
+
+e) You may now say: "Hmm, it seems really simple to correct for the bias and get the true coefficient. So why all this fuss about bias, endogeniety and inconsistency?" But note that we used the values of the demand shock `eps` to estimate the bias. We have those values only because we simulated our data set. We don't know `eps` for a real world data set.
+
+What happens if we use the *residuals*
+`eps.hat` from our regression instead of the  disturbances `eps`? Let us explore it. First call the function `resid` on `reg` and save the result in a variable `eps.hat` to get the residuals.
+
+```{r "3_e"}
+
+# enter your code here ...
+
+```
+
+Now compute two correlations: the correlation between the explanatory variable `p` and the *disturbance* `eps` and the correlation between  `p` and the *residual* `eps.hat`.
+
+```{r "3_e_2"}
+
+# enter your code here ...
+
+```
+
+We find a high correlation between `p` and `eps`, but the correlation between `p` and `eps.hat` is almost zero. You will probably see a number in scientific notation like e.g. `2.54e-16`. In normal notation this would be 0.0000000000000000254. The `e-16` means that we have 16 leading zeros after the decimal point. Indeed if there were no numerical inaccuracies in the computation, the correlation between an explanatory variable and the residuals in a regression would *always be zero*.
+
+So which result would we get if we replaced `eps` by `eps.hat` in the bias formula i.e. if we compute: `cor(x, eps.hat)*sd(eps.hat)/sd(p)`?
+
+Always 0! Since `cor(x,eps.hat)` is always zero (up to rounding errors). Indeed having just our sample data and not knowing `eps` we *cannot* compute or estimate the bias of our estimator.
+
+The bias formula is there for us to help us *think* about whether there could be a bias in a particular example. We have to think whether the data was probably generated in some fashion were an explanatory variable (say `p`) is correlated with the disturbance `eps`.
+
+For example, from economic theory and our simulation study we know that profit maximizing prices likely have a positive correlation with the demand shock. Then we know that our estimator $\hat \beta_1$ of the slope of the demand function also likely has a positive bias.
+
+
+f) The code below runs another Monte-Carlo study, where we compare the distribution of `beta1.hat` for a model with random prices and profit maximizing prices. We show the result for only 3 replications since the code takes some time to run.
+
+```{r "3_f"}
+sim.and.est2 = function(T=100, price.type = c("random", "optimal")[1]) {
+  beta0 = 100
+  beta1 = -1;
+
+  eps = rnorm(T,0,6)
+  cost = runif(T,20,30)
+  if (price.type=="random") {
+    # random prices
+    p = runif(T,30,50)
+  } else {
+    # optimal profit maximzing prices
+    p = (beta0+eps) / (-2*beta1) + c/2 
+  }  
+  q = beta0 + beta1*p + eps
+
+  # Estimate demand function  
+  reg = lm(q~p)
+
+  # Compute confidence interval
+  conf = confint(reg,"p")
+  
+  # Return beta1, beta1.hat and the 
+  # lower and upper bounds of the 95%
+  # confidence interval 
+  c(
+    beta1=beta1,
+    beta1.hat=coef(reg)[[2]],
+    conf.lower = conf[1],
+    conf.upper=conf[2]
+  )
+}
+library(sktools)
+simulation.study(sim.and.est2,par = list(T=100, price.type=c("random","optimal")), repl=3)
+```
+
+Run now the simulation study again in the chunk below with more replications, e.g. `repl=100` and store the result in `dat`.
+```{r "3_f_2"}
+
+# enter your code here ...
+
+```
+
+g) We now want to plot the distributions of `beta1.hat` for the case of random and optimal prices. The fill color shall be given by `price.type`. Fill the ___ in the ggplot code below (you can take a look at the ggplot command in 2f)
+
+```{r "3_g"}
+library(ggplot2)
+ggplot(dat, aes(x=___, fill=___)) +
+  geom_density()
+
+# enter your code here ...
+
+```
+
+
+You see that for random prices our estimator `beta1.hat` is distributed around the true parameter `beta1`, which describes the causal effect of prices on demand. 
+
+For the case of optimal profit maximizing prices the estimator `beta1.hat` is distributed far off the true `beta1`.
+
+h) To compute the expected value of `beta1.hat` for each price type (random or optimal) correctly replace the `___` in the code below.
+
+```{r "3_h"}
+dat %>% 
+  group_by(___) %>%
+  summarize(mean.beta1.hat = mean(beta1.hat))
+
+# enter your code here ...
+
+```
+
+We see that for the case of optimal profit maximizing prices our estimator `beta1.hat` is distributed around a value of roughly `0.62`. This value also has a name: it is the *coefficient of the linear projection*. It is useful if we are just concerned in predicting the output based on observed prices. But not if we are interested in the causal effect of prices on output (which is `beta1=-1`). 
+
+We will come back later in this course to the distinction between predicting a dependent variable and estimating causal effects later. We will then also introduce machine learning methods which are mainly used for prediction problems. 
+
+
+
+
+Ok that's all for this problem set! Follow the steps below to submit your solution.
+
+## Submitting your solution
+
+To submit your problem set first check it via Addins -> "Check Problemset" and then run the following command in the R console:
+
+    make.submission()
+
+It checks again your whole problem set and generates a file of the form `problemsetname__username.sub` that contains your solution and log files.
+Now submit this file for the corresponding assignment on Moodle. 
+Please do not change the name of the file.
+
+** Make sure that you upload the .sub file to Moodle, not some file with another extension!**
+
+

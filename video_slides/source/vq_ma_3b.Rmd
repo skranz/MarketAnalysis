@@ -1,0 +1,87 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_3b.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_3b.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_3b.Rds")
+```
+#>9
+
+#. section
+
+Videos and questions for Chapter 3b of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+
+### Profit maximization of a multi-product firm
+
+#. youtube id="ShLJ95LDMxo", file="3b 1.mp4"
+
+#< quiz "cross_price_effect"
+question: |
+  Which sign would we expect for the cross price derivative $\frac{\partial q_{2}(p)}{\partial p_1}$ for two car models?
+sc:
+  - Negative
+  - Zero
+  - Positive*
+#>
+
+#. youtube id="dAuIhpkglSg", file="3b 2.mp4"
+
+#< quiz "flexible"
+question: |
+  Can the conditional logit with product attributes as explanatory variables well model flexible substitution patterns? Make a guess.
+sc:
+  - Yes, given a well designed choice experiment.
+  - No, the substitition patterns will always be very limited.*
+#>
+
+#. youtube id="xgzXBA7rWB4", file="3b 3.mp4"
+
+#< quiz "sports_family"
+question: |
+  For which car type will a conditional logit model predict a higher increase in the absolute demand if the price of sports car A increases (see video above)?
+sc:
+  - For sports car B
+  - For family car C*
+  - The absolute demand increase will be the same for B and C.
+#>
+
+
+#. youtube id="YiMHkDnYlNI", file="3b 4.mp4"
+
+#< quiz "blue_bus"
+question: |
+  Which choice probabilities will the conditional logit model predict when we introduce the blue bus?
+sc:
+  - The car, red bus and blue bus will each be chosen with probaility 1/3.*
+  - The car will be chosen with probability 1/2 and the blue bus and red bus with probability 1/4 each.
+  - The car will be chosen with probability 1/2 and we don't know the choice probabilities of each bus type.
+#>
+
+### Independence of irrelevant alternatives
+#. youtube id="DTbaS0UMUrY", file="3b 5.mp4"
+
+#. section
+
+### Two consumer types
+
+#. youtube id="Tsf1S_-FcOU", file="3b 6 Two consumer groups.mp4"
+
+
+#< quiz "two_types"
+question: |
+  Will the model with two consumer types have the effect that a price increase of sports car A has a bigger impact on sports car B than on family car C?
+sc:
+  - Yes*
+  - No
+#>
+
+#. youtube id="NrDkKNF10f4", file="3b 7.mp4"
+
+### The mixed logit model
+
+#. youtube id="dGWhbaPUgW0", file="3b 8 Mixed Logit Models.mp4"
+
+That's all. Look at the RTutor problem set 3b to study an application of mixed logit models.

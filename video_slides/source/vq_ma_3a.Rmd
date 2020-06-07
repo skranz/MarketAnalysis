@@ -1,0 +1,102 @@
+#< ignore
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, dev="svg")
+library(miniMOOC)
+preview_mooc_rmd("vq_ma_3a.Rmd", youtube.width=720)
+
+mm = miniMOOC::parse_mooc_rmd("vq_ma_3a.Rmd",youtube.width = 720)
+saveRDS(mm, "ma_3a.Rds")
+```
+#>9
+
+#. section
+
+Videos and questions for Chapter 3a of the course "Market Analysis with Econometrics and Machine Learning" at Ulm University (taught by Sebastian Kranz)
+
+
+### Discrete Choice
+
+#. youtube id="IWyBG--nGBY", file="2c Discrete Choice Intro.mp4"
+
+
+### Choice as Utility Maximization and Random Utility Specification
+
+#. youtube id="dBE994A9ICk", file="2c Utility Maximization and Random Utility Specification.mp4"
+
+#< quiz "OLS_for_U"
+question: |
+  Could we in principle estimate the utility function as a linear regression via ordinary least squares with a given discrete choice data set?
+sc:
+  - Yes, there is no problem.
+  - Yes, but we have to deal with endogeneity problems.
+  - No*
+#>
+
+#. youtube id="6K3t_jdxIiU", file="2c Utilities are not observed.mp4"
+
+#< quiz "normal_or_not"
+question: |
+  What will we assume for the distribution of the random utility shocks $\varepsilon_{nj}$ in a conditonal logit model?
+sc:
+  - We will assume they are normally distributed.
+  - We will assume they follow a different distribution (not a normal distribution)*
+#>
+
+#. section
+
+### The conditional logit model
+
+#. youtube id="zSPQnx1BP2A", file="2c Conditional Logit Model.mp4"
+
+
+### R illustration conditional logit model
+
+#. youtube id="eYd4B729pNo", file="2c R1.mp4"
+
+#< quiz "sigma_choice"
+question: |
+  If we increase the variance what happens for consumer 3's choice probabilities of both products in our example?
+sc:
+  - They become more equal*
+  - They grow even further apart.
+#>
+
+
+#. youtube id="kr5NaEVWjAg", file="2c R2.mp4"
+
+#< quiz "larger_U"
+question: |
+  Which product will consumer 3 pick given the utility values U from the example in the video?
+sc:
+  - Product 1
+  - Product 2*
+  - Given our model's assumptions, we only learn from U that consumer 3 will pick product 2 with higher probability.
+#>
+
+
+#. youtube id="qFBwrkCEYIM", file="2c R3.mp4"
+
+#. section
+
+You may remember from your microeconomic classes different classifications of utility functions, like *ordinal utility functions* or *cardinal utility functions*.
+
+#< quiz "card_u"
+question: |
+  What does a cardinal utility function in general represent?
+sc:
+  - Preferences over choices.
+  - Preferences over lotteries over possible choices.*
+  - A measure of psychological happiness.
+#>
+
+### Normalizations for a discrete choice utility function
+
+#. youtube id="yBLQli3dc3g", file="3a Normalizations of Utility Functions.mp4"
+
+### Maximum likelihood estimation
+
+#. youtube id="OJQE2GjPE48", file="3a ML Estimation.mp4"
+
+That's all for the videos and slides. 
+
+In the RTutor problem we will apply the conditional logit model for a discrete choice data set about heating systems in Californian houses. Besides just exploring the preferences and trade-offs between investment and operational cost, we will use our estimated model to make a prediction of how an investment subsidy to an environmental friendly heating system will affect resulting market shares.
