@@ -37,7 +37,7 @@ The course consists of the following 3 chapters.
   - Tests and False Discoveries: [https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/)
   
 
-**Chapter 2** contrasts econometric modelling with the typical machine learning approach and covers some prediction algorithms like random forests. We discuss which questions can be well treated as classical prediction problems and in which situations good prediction accuracy on a test data set may not be a relevant criterion for the actual question we are interested in. We also illustrate causal forests which is a novel method to identify heterogenous causal effects in experiments.
+**Chapter 2** contrasts econometric modelling with the typical machine learning approach and covers some prediction algorithms like random forests. We discuss which questions can be well treated as classical prediction problems and in which situations good prediction accuracy on a test data set may not be a relevant criterion for the actual question we are interested in. We also illustrate causal forests, which is a novel method to identify heterogenous causal effects in experiments.
 
   - Machine Learning Intro & Lasso Regressions: [https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/)
 
@@ -54,6 +54,6 @@ The course consists of the following 3 chapters.
 
 To locally install the RTutor problem sets download and extract the [ZIP](https://github.com/skranz/MarketAnalysis/archive/master.zip) of the [MarketAnalysis Github repository](https://github.com/skranz/MarketAnalysis).
 
-The open the file `setup/setup.html` to get started ([here](http://econ.mathematik.uni-ulm.de/marketanalysis/setup.html) is a weblink). The instructions were created for the course at Ulm university where the problem sets where hosted on Moodle. If you have downloaded the Github version of the course, you find all problem sets in the directory `RTutor` (Of course, you won't be able to submit your solved problem sets anywhere if you are not a student at Ulm University who takes the course.)
+Then open the file `setup/setup.html` to get started ([here](http://econ.mathematik.uni-ulm.de/marketanalysis/setup.html) is a weblink). The instructions were created for the course at Ulm university where the problem sets where hosted on Moodle. If you have downloaded the Github version of the course, you find all problem sets in the directory `RTutor` (Of course, you won't be able to submit your solved problem sets anywhere if you are not a student at Ulm University who takes the course.)
 
 To run the web-based problem sets starting from Section `2a`, open the file `RTutor/run_ps.R` and the follow the steps described there.
