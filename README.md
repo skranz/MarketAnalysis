@@ -1,6 +1,6 @@
 This repository contains the material for my course
 
-## Market Analysis with Econometrics and Machine Learning**
+## Market Analysis with Econometrics and Machine Learning
 
 taught by Sebastian Kranz at Ulm University. The course was adapted during the Corona crisis as an open online course and has many interactive elements.
 
@@ -19,6 +19,8 @@ Each section also has an interactive RTutor problem set where you work yourself 
 (Note that the density of xkcd comics in the awards strongly increases from Section 2a onwards.) Given my limited budget I only have a free shinyapps.io account which has quite limited monthly usage hours. To solve the RTutor problem sets, you should install them on your own computer (explained further below) or solve them on the rstudio cloud here:
 
 [https://rstudio.cloud/project/1361010](https://rstudio.cloud/project/1361010)
+
+Take a look at the README in the rstudio cloud project. Also [this youtube video](http://www.youtube.com/watch?v=_yUX5erDozQ&t=1m7s) helps to get started with the first RTutor problem set, which is designed to be solved inside RStudio.
 
 ### Course content
 
@@ -47,3 +49,11 @@ The course consists of the following 3 chapters.
   - Discrete Choice Experiments and the Conditional Logit Model: [https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/)
 
   - Exploring Substitution Patterns Between Products and the Mixed Logit Model: [https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/)
+
+### Local Installation for RTutor Problem Sets
+
+To locally install the RTutor problem sets download and extract the [ZIP](https://github.com/skranz/MarketAnalysis/archive/master.zip) of the [MarketAnalysis Github repository](https://github.com/skranz/MarketAnalysis).
+
+The open the file `setup/setup.html` to get started ([here](http://econ.mathematik.uni-ulm.de/marketanalysis/setup.html) is a weblink). The instructions were created for the course at Ulm university where the problem sets where hosted on Moodle. If you have downloaded the Github version of the course, you find all problem sets in the directory `RTutor` (Of course, you won't be able to submit your solved problem sets anywhere if you are not a student at Ulm University who takes the course.)
+
+To run the web-based problem sets starting from Section `2a`, open the file `RTutor/run_ps.R` and the follow the steps described there.
