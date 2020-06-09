@@ -16,7 +16,7 @@ Each section also has an interactive RTutor problem set where you work yourself 
 
 [https://skranz.shinyapps.io/MarketAnalysis_2b/](https://skranz.shinyapps.io/MarketAnalysis_2b/)
 
-(Note that the density of xkcd comics in the awards strongly increases from Section 2a onwards.) Given my limited budget I only have a free shinyapps.io account which has very limited monthly useage ours. To solve the RTutor problem sets, you should install them on your own computer (explained further below) or solve them on the rstudio cloud here:
+(Note that the density of xkcd comics in the awards strongly increases from Section 2a onwards.) Given my limited budget I only have a free shinyapps.io account which has quite limited monthly usage hours. To solve the RTutor problem sets, you should install them on your own computer (explained further below) or solve them on the rstudio cloud here:
 
 [https://rstudio.cloud/project/1361010](https://rstudio.cloud/project/1361010)
 
@@ -26,24 +26,24 @@ The course consists of the following 3 chapters.
 
 **Chapter 1** directly starts with an example illustrating why historical sales data may yield very misleading results if we want to estimate a demand function for a product. We then work through the econometric background focusing on endogeniety problems and approaches for estimating causal effects. Here are the links to the video quiz shiny apps:
 
-  - Bob's Ice Cream Business [https://mm.econ.mathematik.uni-ulm.de/public/ma-1a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1a/)
+  - Bob's Ice Cream Business: [https://mm.econ.mathematik.uni-ulm.de/public/ma-1a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1a/)
 
-  - Linear Regression and Endogeniety Problems [https://mm.econ.mathematik.uni-ulm.de/public/ma-1b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1b/)
+  - Linear Regression and Endogeneity Problems: [https://mm.econ.mathematik.uni-ulm.de/public/ma-1b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1b/)
 
-  - Control Variables, Regression Anatomy and Instrumental Variables [https://mm.econ.mathematik.uni-ulm.de/public/ma-1c/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1c/)
+  - Control Variables, Regression Anatomy and Instrumental Variables: [https://mm.econ.mathematik.uni-ulm.de/public/ma-1c/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1c/)
   
-  - Tests and False Discoveries [https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/)
+  - Tests and False Discoveries: [https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/](https://mm.econ.mathematik.uni-ulm.de/public/ma-1d/)
   
 
 **Chapter 2** contrasts econometric modelling with the typical machine learning approach and covers some prediction algorithms like random forests. We discuss which questions can be well treated as classical prediction problems and in which situations good prediction accuracy on a test data set may not be a relevant criterion for the actual question we are interested in. We also illustrate causal forests which is a novel method to identify heterogenous causal effects in experiments.
 
-  - Machine Learning Intro plus Lasso Regressions [https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/)
+  - Machine Learning Intro & Lasso Regressions: [https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-2a/)
 
-  - Trees and Forests (including Causal Forests) [https://mm.econ.mathematik.uni-ulm.de/public/ma-2b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-2b/)
+  - Trees and Forests (including Causal Forests): [https://mm.econ.mathematik.uni-ulm.de/public/ma-2b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-2b/)
 
 
 **Chapter 3** covers discrete choice models.
 
-  - Discrete Choice Experiments and the Conditional Logit Model [https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/)
+  - Discrete Choice Experiments and the Conditional Logit Model: [https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3a/)
 
-  - Exploring Substitution Patterns Between Products and the Mixed Logit Model [https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/)
+  - Exploring Substitution Patterns Between Products and the Mixed Logit Model: [https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/](https://mm.econ.mathematik.uni-ulm.de/public/ma-3b/)
