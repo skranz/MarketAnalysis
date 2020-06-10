@@ -54,6 +54,6 @@ The course consists of the following 3 chapters.
 
 To locally install the RTutor problem sets download and extract the [ZIP](https://github.com/skranz/MarketAnalysis/archive/master.zip) of the [MarketAnalysis Github repository](https://github.com/skranz/MarketAnalysis).
 
-Then open the file `setup/setup.html` to get started ([here](http://econ.mathematik.uni-ulm.de/marketanalysis/setup.html) is a weblink). The instructions were created for the course at Ulm university where the problem sets where hosted on Moodle. If you have downloaded the Github version of the course, you find all problem sets in the directory `RTutor` (Of course, you won't be able to submit your solved problem sets anywhere if you are not a student at Ulm University who takes the course.)
+Then run `setup/install_packages.R` to install all reuqired packages and look at `setup/setup.html` to get started ([here](http://econ.mathematik.uni-ulm.de/marketanalysis/setup.html) is a weblink). The instructions were created for the course at Ulm university where the problem sets where hosted on Moodle. If you have downloaded the Github version of the course, you find all problem sets in the directory `RTutor` (Of course, you won't be able to submit your solved problem sets anywhere if you are not a student at Ulm University who takes the course.)
 
 To run the web-based problem sets starting from Section `2a`, open the file `RTutor/run_ps.R` and the follow the steps described there.
